@@ -1,4 +1,5 @@
 import pandas as pd
+from datetime import date
 
 class joueur:
     def __init__(self, idNatEchec, nomDeFamille, prenom, dateDeNaissance, score_cumule=0):    # score_cumule=0
@@ -84,8 +85,8 @@ class match:
 joueur1 = joueur("AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA")
 joueur2 = joueur("AAABBBB", "AAABBBB", "AAABBBB", "AAABBBB")
 nombre_tour = input("Entrez le nombre de tours souhaitez pour ce tournoi :")
-test_tournoi = tournoi.informations_tournoi("toto", "Marseille", "dateDeDebut", "samedi", nombre_tour, 2, 6)
-# info_tournoi = test_tournoi.informations_tournoi()
+tournoi.informations_tournoi("Premier Tournoi", "Marseille", date.today(), "samedi", nombre_tour, 2, 6)
+
 
 test_paire = [joueur1, joueur2]
 match1 = match(test_paire)
