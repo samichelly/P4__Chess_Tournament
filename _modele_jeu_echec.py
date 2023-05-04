@@ -1,15 +1,15 @@
 class joueur:
-    def __init__(self, idNatEchec, nomDeFamille, prenom, dateDeNaissance, score_total):
+    def __init__(self, idNatEchec, nomDeFamille, prenom, dateDeNaissance):
          self.idNatEchec = idNatEchec
          self.nomDeFamille = nomDeFamille
          self.prenom = prenom
          self.dateDeNaissance = dateDeNaissance
-         self.score_total = score_total
+        #  self.score_total = score_total
 
 def match_J1_vs_J2(J1, J2):
     resultat_J1 = resultat_J2 = 0
     # générateur de score aléatoire
-    resultat_J1 = 1
+    resultat_J1 = 0
     resultat_J2 = 0
     if resultat_J1 == 1:
         print("J1 a gagné")
@@ -30,11 +30,15 @@ class match:
         
         
 
-joueur1 = joueur("AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA", 1)
-joueur2 = joueur("AAABBBB", "AAABBBB", "AAABBBB", "AAABBBB", 0)
+joueur1 = joueur("AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA")
+joueur2 = joueur("AAABBBB", "AAABBBB", "AAABBBB", "AAABBBB")
 
-print(joueur1.prenom)
-print(joueur2)
+test_paire = [joueur1, joueur2]
+match1 = match(test_paire)
+match1.opposition(test_paire)
+
+# print(joueur1.prenom)
+# print(joueur2)
 
 # class tournoi:
 #     def __init__(self) -> None:
