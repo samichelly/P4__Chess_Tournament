@@ -62,6 +62,8 @@ class tournoi:
         # pass
         #attribution des points dans tableau
         #trier pour obtenir un classement ordonné
+        print(self[0])
+        print(self[1])
         for _ in self[0]:
             # print(_)
             tableau.loc[[_], ['score']] += 1
@@ -123,9 +125,11 @@ class match:
     def attribution_point_match(self, point):
         pass
     
-    def match_J1_vs_J2(self):                       #gérer le problème de scoreJ2
+    def match_J1_vs_J2(self, vainqueur, egalite):                       #gérer le problème de scoreJ2
         # print(f"self_match : {self}")
         scoreJ1 = scoreJ2 = 0.0
+        # vainqueur = []
+        # egalite = []
         opposition_match = ([self[0], scoreJ1], [self[1], scoreJ2])
         # générateur de score aléatoire
         score_possible = 0.0, 0.5, 1.0
@@ -135,17 +139,20 @@ class match:
         if scoreJ1 == [0.0]:
             print("cas 1")
             scoreJ2 = 1.0
+            # vainqueur.append(self[1])
             vainqueur.append(self[1])
         elif scoreJ1 == [0.5]:
             print("cas 2")
             scoreJ2 = 0.5
-            egalite.append(self[0])
-            egalite.append(self[1])
+            # egalite.append(self[0])
+            # egalite.append(self[1])
+            egalite.extend(self)
         else:
             print("cas 3")
             scoreJ2 = 0.0
+            # vainqueur.append(self[0])
             vainqueur.append(self[0])
-        print(f"scoreJ1 : {scoreJ1}   scoreJ2 : {scoreJ2}")
+        print(f"scoreJ1 : {self[0]} - {scoreJ1}   scoreJ2 : {self[1]} - {scoreJ2}")
         print(vainqueur)
         print(egalite)
         return vainqueur, egalite
@@ -155,7 +162,7 @@ class match:
 
 liste_colonne = ["idNatEchec", "nomDeFamille", "prenom", "score"]
 tableau = pd.DataFrame(columns=liste_colonne)
-for i in range(1, 9):
+for i in range(1, 5):
     identifiant = id_aleatoire()
     joueur.listedesjoueurs(i, identifiant , f"AAAAAAA{10-i}", "AAAAAAA", tableau)
 tableau = tableau.set_index(tableau['idNatEchec'])
@@ -164,17 +171,22 @@ tableau = tableau.set_index(tableau['idNatEchec'])
 
 # print(tableau)
 # nombre_tour = input("Entrez le nombre de tours souhaitez pour ce tournoi :")
-nombre_tour = 1
+nombre_tour = 2
 # tournoi.informations_tournoi("Premier Tournoi", "Marseille", date.today(), "samedi", nombre_tour, 2, 6)
 Listes_Joueurs = tournoi.getListJoueur(tableau)#, joueurs)
 
 for _ in range(nombre_tour):
     paire_compile = tours.generation_des_paires(Listes_Joueurs, 0)
     # print(f"paire {paire_compile}")
+    vainqueur = []
+    egalite = []
     for i in paire_compile:
         # print(f"i :{i}")
-        resultat = match.match_J1_vs_J2(i)
-        # print(f"resultat : {resultat}")
+        # resultat = []
+        resultat = match.match_J1_vs_J2(i, vainqueur, egalite)
+        # print(type(resultat))
+        #[match.match_J1_vs_J2(i)]
+    print(f"resultat : {resultat}")
     tableau_maj = tournoi.attribution_points(resultat, tableau)
     print(tableau_maj)
     ranking = tournoi.classement(tableau_maj)
