@@ -1,6 +1,6 @@
 import pandas as pd
 from datetime import date
-import random
+import random, re
 
 
 # Création Id aléatoire
@@ -26,7 +26,7 @@ class joueur:
          self.tableau = tableau
     
     def listedesjoueurs(self, idNatEchec, nomDeFamille, prenom, tableau):
-        score = 0
+        score = 0.0
         tableau.loc[len(tableau)] = [idNatEchec, nomDeFamille, prenom, score]
         return tableau
     # def score_Joueurs(self, ):
@@ -51,7 +51,7 @@ class tournoi:
     #         print("Le vainqueur est ")
     
     def getListJoueur(self):#, listeJoueursEnregistres):
-        print(f"Liste des participants : \n{self}")
+        # print(f"Liste des participants : \n{self}")
         return self
 
     def init_tours(self):
@@ -63,15 +63,22 @@ class tournoi:
         #attribution des points dans tableau
         #trier pour obtenir un classement ordonné
         for _ in self[0]:
-            print(_)
-            tableau.loc[[_], ['score']] = 1
-        print(tableau)
+            # print(_)
+            tableau.loc[[_], ['score']] += 1
+
+        for _ in self[1]:
+            # print(_)
+            tableau.loc[[_], ['score']] += 0.5
         # print(tableau)
-        # gagnant = resultat[0]
-        # egalite = resultat[1]
-        # print(f"gagnants {gagnant}")
-        # print(f"egalite {egalite}")
+        return tableau
+    
+    def classement(self):
         # pass
+        # print(self)
+        self.sort_index()
+        # print(self)
+        # print(f"classement trié : \n {self}")
+        #trier pour obtenir un classement ordonné
     
 
 class tours:
@@ -86,23 +93,24 @@ class tours:
     #     pass
     def generation_des_paires(self, idTours):
         # pour chaque ligne du tableau, je veux constituer un tuple de 2 listes ([id, score], [id, score]) = match
-        # for i in range(1, len(self), 2):
-        #     opposition_match = [self['idNatEchec'].values[i], self['idNatEchec'].values[i+1]]
-        #     print(opposition_match)
+        # print(f"ggg: {self}")
         paire_compil = []
-        if idTours == 0:
+        if idTours in [0, 1]:
+            # self.sample(frac=1)
+            # print(self)
             # random.shuffle(self)   #Faire un shuffle sur la colonne idNatEchec
             for i in range(0, len(self), 2):
                 paire = [self['idNatEchec'].values[i], self['idNatEchec'].values[i+1]]
                 paire_compil.append(paire)
-            print(f"paire_compil : {paire_compil}")
+            # print(f"paire_compil : {paire_compil}")
             #     resultat = match_J1_vs_J2(paire)
             # print(f"Vainqueurs : {resultat}")
         else:
-            print("OK")
+            for i in range(0, len(self), 2):
+                paire = [self['idNatEchec'].values[i], self['idNatEchec'].values[i+1]]
+                paire_compil.append(paire)
         return paire_compil
         #     pass
-        # print(listeParticipants)
 
         #(ex : round X)
 
@@ -115,56 +123,59 @@ class match:
     def attribution_point_match(self, point):
         pass
     
-    # def opposition(self, paire):
-    #     J1 = paire[0]
-    #     J2 = paire[1]
-    #     match_J1_vs_J2(J1, J2)
-
-    def match_J1_vs_J2(self):
+    def match_J1_vs_J2(self):                       #gérer le problème de scoreJ2
         # print(f"self_match : {self}")
-        scoreJ1 = scoreJ2 = 0
+        scoreJ1 = scoreJ2 = 0.0
         opposition_match = ([self[0], scoreJ1], [self[1], scoreJ2])
-        # print(f"opposition_match : {opposition_match}")
-        scoreJ1 = 1
         # générateur de score aléatoire
-        if scoreJ1 == 1:
-            # print("J1 a gagné")
-            vainqueur.append(self[0])
-        elif scoreJ1 == scoreJ2:
-            print("J1 et J2 ont fait match nul")
+        score_possible = 0.0, 0.5, 1.0
+        # scoreJ1 = 0
+        scoreJ1 = random.sample(score_possible, 1)
+        # print(f"score : {self[0]} - {scoreJ1}")
+        if scoreJ1 == [0.0]:
+            print("cas 1")
+            scoreJ2 = 1.0
+            vainqueur.append(self[1])
+        elif scoreJ1 == [0.5]:
+            print("cas 2")
+            scoreJ2 = 0.5
             egalite.append(self[0])
             egalite.append(self[1])
         else:
-            print("J2 a gagné")
-            vainqueur.append(self[1])
-        # print(vainqueur)
+            print("cas 3")
+            scoreJ2 = 0.0
+            vainqueur.append(self[0])
+        print(f"scoreJ1 : {scoreJ1}   scoreJ2 : {scoreJ2}")
+        print(vainqueur)
+        print(egalite)
         return vainqueur, egalite
 
 
-
-        
+   
 
 liste_colonne = ["idNatEchec", "nomDeFamille", "prenom", "score"]
 tableau = pd.DataFrame(columns=liste_colonne)
 for i in range(1, 9):
     identifiant = id_aleatoire()
-    joueur.listedesjoueurs(i, identifiant , "AAAAAAA", "AAAAAAA", tableau)
+    joueur.listedesjoueurs(i, identifiant , f"AAAAAAA{10-i}", "AAAAAAA", tableau)
 tableau = tableau.set_index(tableau['idNatEchec'])
-print(tableau.index)
+# tableau.drop('idNatEchec', columns='idNatEchec')       #supprimer colonne "idNatEchec"
+# print(tableau)
 
-print(tableau)
+# print(tableau)
 # nombre_tour = input("Entrez le nombre de tours souhaitez pour ce tournoi :")
-nombre_tour = 4
-tournoi.informations_tournoi("Premier Tournoi", "Marseille", date.today(), "samedi", nombre_tour, 2, 6)
+nombre_tour = 1
+# tournoi.informations_tournoi("Premier Tournoi", "Marseille", date.today(), "samedi", nombre_tour, 2, 6)
 Listes_Joueurs = tournoi.getListJoueur(tableau)#, joueurs)
-paire_compile = tours.generation_des_paires(Listes_Joueurs, 0)
-# print(f"paire {paire_compile}")
-for i in paire_compile:
-    print(f"i :{i}")
-    resultat = match.match_J1_vs_J2(i)
-    # print(f"resultat : {resultat}")
-tournoi.attribution_points(resultat, tableau)
 
-    
-
-
+for _ in range(nombre_tour):
+    paire_compile = tours.generation_des_paires(Listes_Joueurs, 0)
+    # print(f"paire {paire_compile}")
+    for i in paire_compile:
+        # print(f"i :{i}")
+        resultat = match.match_J1_vs_J2(i)
+        # print(f"resultat : {resultat}")
+    tableau_maj = tournoi.attribution_points(resultat, tableau)
+    print(tableau_maj)
+    ranking = tournoi.classement(tableau_maj)
+    # print(ranking)
