@@ -1,8 +1,8 @@
 import random
-from view import Tournoi as TRN
-from view import create_description
+# from view import Tournament
+from controller import DateTime
 
-ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ -"
 
 
 class Gestionnaire_Joueur:
@@ -19,15 +19,12 @@ class Gestionnaire_Joueur:
         return self.IdExistant
 
 
-jj = Gestionnaire_Joueur()
-print(jj.check_id_unicity())
-print(jj.add_id_player("JHBi"))
-create_description()
-print(jj.check_id_unicity())
-print(jj.add_id_player("HV"))
-print(jj.check_id_unicity())
-print(jj.add_id_player("JH"))
-print(jj.check_id_unicity())
+# jj = Gestionnaire_Joueur()
+# print(jj.check_id_unicity())
+# print(jj.add_id_player("JHBi"))
+# print(jj.check_id_unicity())
+# print(jj.add_id_player("HV"))
+# print(jj.check_id_unicity())
 
 
 class Joueur:
@@ -65,13 +62,10 @@ class Joueur:
             return IdJoueur
         else:  # remplacer par un raise
             print("l'identifiant n'est pas au bon format")
-        
 
     def valid_nom(self):
-        poi = Gestionnaire_Joueur().check_id_unicity()
-        print(poi)
         nom = input("Entrer le nom de famille :")
-        if nom.isalpha():
+        if nom in ALPHABET:
             print("Nom OK")
             return nom
         else:
@@ -79,7 +73,7 @@ class Joueur:
 
     def valid_prenom(self):
         prenom = input("Entrer le prénom :")
-        if prenom.isalpha():
+        if prenom in ALPHABET:
             print("Prénom OK")
             return prenom
         else:
@@ -100,7 +94,7 @@ class Joueur:
         print(profile)
 
 
-J1 = Joueur()
+# J1 = Joueur()
 # # print(f"print nom{J1.nom}")
 # resultat = ("IDHHD", 3)
 # J1.update_score(resultat)
@@ -114,23 +108,18 @@ J1 = Joueur()
 # print(J1._IdJoueur)
 # ajouter les property
 
-# Regarder comment ne pas modifier les attributs à l'extérieur. + attribut de classe
-
 
 class Tournoi:
-    def __init__(
-        self,
-    ):
-        self.nom = ""
-        self.lieu = ""
-        self.dateDeDebut = ""
+    def __init__(self, name, place, description, nb_round):
+        self.name = name
+        self.place = place
+        self.dateDeDebut = DateTime().get_day
         self.dateDeFin = ""
-        self.nbTours = 0
-        # self.nTourActuel = nTourActuel
-        self.listeTour = []
-        # self.matchs_joues = [Tours.match_joues()] #remplacer par le resultat des matchs ?
+        self.nbTours = nb_round
+        self.nTourActuel = len(self.list_round)
+        self.list_round = []
         self.listeJoueursEnregistres = []
-        self.description = ""
+        self.description = description
 
     def aff_tableau(self, tableau):
         print(tableau)
@@ -139,20 +128,18 @@ class Tournoi:
     def players_list(self):
         self.listeJoueursEnregistres.append(Joueur().profile_player())
 
-    def add_description(self):
-        self.description = TRN.create_description(self)
+    # def add_description(self):
+    #     self.description = Tournament().create_description(self)
 
     def classement(self, tableau):
         tableau.sort_values(by=["score"], ascending=False, inplace=True)
         print(tableau)
 
     # Remplacer par __str__ ?
-    def informations_tournoi(
-        self, nom, lieu, dateDeDebut, dateDeFin, nbTours, nTourActuel
-    ):  # , listeJoueursEnregistres):
+    def informations_tournoi(self):  # , listeJoueursEnregistres):
         print(
-            f"Tournoi {nom} à {lieu}, commence le {dateDeDebut} et se termine {dateDeFin}. Le tournoi est composé de {nbTours}. Tour actuel {nTourActuel}."
-        )
+            f"Tournoi {self.name} à {self.place}"
+        )  # , commence le {dateDeDebut} et se termine {dateDeFin}. Le tournoi est composé de {nbTours}. Tour actuel {nTourActuel}."
 
     def init_tours(self, nb_tours):  # Recupérer view/tournoi/number_of_round
         self.nbTours = nb_tours
@@ -249,11 +236,11 @@ class Tour:
 # tr1 = Tour(None, None, tableau, None)
 
 
-TT = Tournoi()
-dictionaire = {"AAA": 6, "BB": 6, "BZ": 5, "AB": 1}
-test_tour = TT.sort_ranking(dictionaire)
-print(test_tour)
-tr1 = Tour(None, test_tour, None)
+# TT = Tournoi()
+# dictionaire = {"AAA": 6, "BB": 6, "BZ": 5, "AB": 1}
+# test_tour = TT.sort_ranking(dictionaire)
+# print(test_tour)
+# tr1 = Tour(None, test_tour, None)
 
 
 class Match:

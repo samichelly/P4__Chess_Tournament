@@ -1,6 +1,5 @@
 # import models
-from datetime import date
-from datetime import datetime
+
 
 ### VUE ###
 
@@ -19,42 +18,34 @@ class Joueur:
         print("Création du joueur réussie")
 
 
-class Tournoi:
-    # def create_tournament(self):
-    #     choice = input("'1' pour créer un nouveau tournoi :\n '2' pour charger un tournoi")
-    #     if choice == 1:
-    #         #créer un tournoi
-    #     elif choice == 2:
-    #         #charger un tournoi
-    #     else:
-    #         # error
+class Tournament:
+    def select_tournament(self):
+        print("\n'1' créer un nouveau tournoi\n'2' charger un tournoi")
+        return int(input("Choix :"))
 
     def number_of_round(self):
-        print("Indiquez le nombre de tour qui compose le tournoi :")
-        nb_round = int(
-            input("Entrez une valeur pour modifier le paramètre par défaut : ")
-        )
-        if nb_round is False:
+        nb_round = input("Indiquez le nombre de tour qui compose le tournoi :")
+        if nb_round.isnumeric() is False:
             print("Erreur de saisi. Le tournoi sera de 4 tours par défaut")
             return 4
         else:
-            print("le tournoi sera de {nb_round} tour(s)")
+            print(f"le tournoi sera de {nb_round} tour(s)")
             return nb_round
         # Envoyer vers le controlleur pour vérification
 
-    def about_tournament():
-        tournament_name = input("Entrez le nom du tournoi : ")
-        return tournament_name
-        tournament_place = input("Entrez le lieu : ")
-        return tournament_place
+    def about_tournament(self):
+        tournament_info = []
+        tournament_info.append(input("\nEntrez le nom du tournoi : "))
+        tournament_info.append(input("Entrez le lieu : "))
+        tournament_info.append(input("Entrez une description : "))
+        return tournament_info
 
     def display_resultat(self, dic_joueur):  # get profil des joueurs
         print("\nClassement final :\n")
         # create dataframe
 
     def create_description(self):
-        input = "Ajouter une description : "
-        return input
+        return input("Ajouter une description : ")
 
     def launch_new_round(self):
         # lancer un nouveau tour
@@ -81,14 +72,6 @@ class Match:
 
 class Tour:
     def match_list(self):
-        print("Matchs du Tour X : ")
-
-
-class DateTime:
-    def get_day(self):
-        return date.today().strftime("%d/%m/%Y")
-
-    def get_time(self):
-        return datetime.now().strftime("%H:%M:%S")
+        print("Matchs du tour : ")
 
 
