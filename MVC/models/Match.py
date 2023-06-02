@@ -9,42 +9,43 @@ class Match:
         self.player2 = paire[1]
         self.scoreJ1 = 0
         self.scoreJ2 = 0
-        self.couleurJ1 = ""
-        self.couleurJ2 = ""
+        self.color1 = ""
+        self.color2 = ""
 
     def attribution_couleur(self, paire):
         random_color_choice = random.choice([True, False])
         if random_color_choice is True:
-            color1 = "Blanc"
-            color2 = "Noir"
+            self.color1 = "Noir"
+            self.color2 = "Blanc"
         else:
-            color2 = "Blanc"
-            color1 = "Noir"
-        print(f"{self.player1} est {color1}, {self.player2} est {color2}")
+            self.color1 = "Blanc"
+            self.color2 = "Noir"
+        print(f"{self.player1} est {self.color1}, {self.player2} est {self.color2}")
 
     def input_score(self, paire):  # à retourner dans les resultats de Tour
         running = True
         while running:
-            print(f"\n1- {self.player1} gagne\n2- {self.player2} gagne\n3- égalité\n")
+            print(f"\nGagnant ?\n1 {self.player1}\n2 {self.player2}\n3 égalité")
             result = input("Résultat : ")
             try:
-                if result in ["1", "2", "3"]:
-                    if result == "1":
-                        return ([paire[0], 1], [paire[1], 0])
-                    elif result == "2":
-                        return ([paire[0], 0], [paire[1], 1])
-                    else:
-                        return ([paire[0], 0.5], [paire[1], 0.5])
+                if result not in ["1", "2", "3"]:
+                    raise ValueError("Entrée incorrecte")
+                if result == "1":
+                    return ([paire[0], 1], [paire[1], 0])
+                elif result == "2":
+                    return ([paire[0], 0], [paire[1], 1])
                 else:
-                    raise ValueError("\nEntrée incorrecte\n")
+                    return ([paire[0], 0.5], [paire[1], 0.5])
+                # else:
+
             except ValueError as error:
                 print("Erreur :", error)
 
 
-m = Match(["FFFF", "KKK"])
-m.attribution_couleur(["FFFF", "KKK"])
-test = m.input_score(["FFFF", "KKK"])
-print(test)
+# m = Match(["FFFF", "KKK"])
+# m.attribution_couleur(["FFFF", "KKK"])
+# test = m.input_score(["FFFF", "KKK"])
+# print(test)
 
 
 # match1 = Match(["AAAAAA", "BBBBBB"])

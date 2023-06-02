@@ -4,37 +4,42 @@ import re
 # from controller import DateTime
 
 
-class Gestionnaire_Joueur:
+class Players_Manager:
     def __init__(self):
-        self.IdExist = []
+        self.idExist = []
+        self.players_list = []
 
     def add_id_player(self, idplayer):
-        self.IdExist.append(idplayer)
-        print(self.IdExist)
+        self.idExist.append(idplayer)
 
     def check_id_unicity(self):
-        return self.IdExist
+        print(self.idExist)
+        return self.idExist
+
+    def create_players_list(self, player):
+        self.players_list.append(player)
+        print("qqqqqqqqq")
+        print(self.players_list)
+        return self.players_list
 
 
-# faire à nouveau les tests sur Gestionnaire_Joueur
-
-
-class Joueur:
+class Player:
     """Ajouter un gestionnaire de joueur afin de récupérer chacun des joueurs ou bien transmettre chaque joueur à tournoi
     Création Ajout de joueur, fin d'ajout de joueur"""
 
-    def __init__(self, idJoueur=None, nom=None, prenom=None, dateDeNaissance=None):
+    def __init__(self, player):
         # Ajouter validation données et contrôle unicité
-        self.idJoueur = self.valid_id()  # ne fonctionne pas
-        self.nom = self.valid_nom()
-        self.prenom = self.valid_prenom()
-        self.nom_complet = f"{self.prenom} {self.nom}"
-        self.dateDeNaissance = self.valid_birthday()
-        self.score = 10
+        self.idJoueur = player[0]  # ne fonctionne pas
+        self.name = player[1]  # self.valid_nom()
+        # self.forename = player[2]  # self.valid_prenom()
+        # self.fullname = f"{self.forename} {self.name}"
+        # self.birthday = player[3]  # self.valid_birthday()
+
+        self.score = 0
 
     def valid_id(self):
         pattern = r"^[A-z]{2}\d{5}$"
-        idExist = Gestionnaire_Joueur().check_id_unicity()
+        idExist = Players_Manager().check_id_unicity()
         running = True
         while running:
             IdJoueur = str.upper(input("Identifiant Nat. du joueur :"))
@@ -43,7 +48,7 @@ class Joueur:
                 if re.search(pattern, IdJoueur):
                     if IdJoueur in idExist:
                         raise ValueError("Identifiant déjà enregistré")
-                    Gestionnaire_Joueur().add_id_player(IdJoueur)
+                    Players_Manager().add_id_player(IdJoueur)
                     print("Identifiant conforme")
                     running = False
                     return IdJoueur
@@ -52,13 +57,13 @@ class Joueur:
             except ValueError as error:
                 print("Erreur :", error)
 
-        # print(Gestionnaire_Joueur().check_id_unicity())
-        # Gestionnaire_Joueur().add_id_player("HB89756")
-        # print(Gestionnaire_Joueur().check_id_unicity())
+        # print(Players_Manager().check_id_unicity())
+        # Players_Manager().add_id_player("HB89756")
+        # print(Players_Manager().check_id_unicity())
 
-    def valid_nom(self):
-        pattern = r"^[A-z]+[ -][A-z]+$"
-        pattern2 = r"^[A-z]+$"
+    def valid_name(self):
+        pattern = r"^[A-Za-z]+[ -][A-Za-z]+$"
+        pattern2 = r"^[A-Za-z]+$"
         running = True
         while running:
             name = str.upper(input("Nom :"))
@@ -107,24 +112,26 @@ class Joueur:
     def update_score(self, game_result):  # game_result => tuple (id_joueur, point)
         self.score += game_result[1]
 
-    def profile_player(self):
-        profile = {
+    def player_profile(self):
+        return {
             "id_nat": self.idJoueur,
-            "nom complet": self.nom_complet,
-            "date de naissance": self.dateDeNaissance,
-            "score": self.score,
+            # "nom complet": self.fullname
+            # "date de naissance": self.birthday,
+            # "score": self.score,
         }
-        print(profile)
 
-    def set_to_zero(self):
+    def shorted_player_profile(self):
+        return (self.idJoueur, self.score)
+
+    def set_score_to_zero(self):
         self.score = 0
 
 
-J1 = Joueur()
-print(J1.nom_complet)
-print(J1.score)
-J1.set_to_zero()
-print(J1.score)
+# J1 = Joueur()
+# print(J1.nom_complet)
+# print(J1.score)
+# J1.set_to_zero()
+# print(J1.score)
 # # print(f"print nom{J1.nom}")
 # resultat = ("IDHHD", 3)
 # J1.update_score(resultat)
@@ -132,8 +139,3 @@ print(J1.score)
 # J1.update_score(resultat2)
 # print(J1.score)
 
-
-# J1 = Joueur("77777", "UUU", "HHH", "")
-# print(J1.nom_tt("UUU", "HHH"))
-# print(J1._IdJoueur)
-# ajouter les property

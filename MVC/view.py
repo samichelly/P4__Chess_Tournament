@@ -1,26 +1,28 @@
+import pandas as pd
+
 # import models
 
 
 ### VUE ###
 
 
-class Joueur:
-    def input_identity_player(self):
-        IdJoueur = input("Entrer l'Identifiant National du joueur :")
-        # Envoyer vers le controlleur pour vérification  / self.valid_id(self.IdJoueur)
-        nomDeFamille = input("Entrer le nom de famille du joueur :")
-        # Envoyer vers le controlleur pour vérification
-        prenom = input("Entrer le prénom du joueur :")
-        # Envoyer vers le controlleur pour vérification
-        dateDeNaissance = input("Entrer la date de naissance du joueur :")
-        # Envoyer vers le controlleur pour vérification
-        # Si tous les inputs OK print
-        print("Création du joueur réussie")
+# class Joueur:
+#     def input_identity_player(self):
+#         IdJoueur = input("Entrer l'Identifiant National du joueur :")
+#         # Envoyer vers le controlleur pour vérification  / self.valid_id(self.IdJoueur)
+#         nomDeFamille = input("Entrer le nom de famille du joueur :")
+#         # Envoyer vers le controlleur pour vérification
+#         prenom = input("Entrer le prénom du joueur :")
+#         # Envoyer vers le controlleur pour vérification
+#         dateDeNaissance = input("Entrer la date de naissance du joueur :")
+#         # Envoyer vers le controlleur pour vérification
+#         # Si tous les inputs OK print
+#         print("Création du joueur réussie")
 
 
 class Tournament:
     def select_tournament(self):
-        print("\n'1' créer un nouveau tournoi\n'2' charger un tournoi")
+        print("\n1 créer un nouveau tournoi\n2 charger un tournoi")
         return int(input("Choix :"))
 
     def number_of_round(self):
@@ -34,22 +36,23 @@ class Tournament:
         # Envoyer vers le controlleur pour vérification
 
     def about_tournament(self):
-        tournament_info = []
-        tournament_info.append(input("\nEntrez le nom du tournoi : "))
+        tournament_info = [input("\nEntrez le nom du tournoi : ")]
         tournament_info.append(input("Entrez le lieu : "))
         tournament_info.append(input("Entrez une description : "))
         return tournament_info
 
-    def display_resultat(self, dic_joueur):  # get profil des joueurs
+    def display_final_ranking(self, dic_joueur):  # get profil des joueurs
         print("\nClassement final :\n")
+        # table_head =
+        # final_ranking = pd.DataFrame(columns=)
+
         # create dataframe
 
-    def create_description(self):
-        return input("Ajouter une description : ")
-
     def launch_new_round(self):
-        # lancer un nouveau tour
-        pass
+        new_round = input("Lancez un nouveau tour ?\n 1 - oui\n 2 - non")
+        if new_round == "1":
+            # lancer nouveau tour
+            pass
 
 
 class Match:
@@ -73,5 +76,3 @@ class Match:
 class Tour:
     def match_list(self):
         print("Matchs du tour : ")
-
-
