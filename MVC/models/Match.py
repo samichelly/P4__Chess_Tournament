@@ -22,6 +22,8 @@ class Match:
             self.color2 = "Noir"
         print(f"{self.player1} est {self.color1}, {self.player2} est {self.color2}")
 
+    #ajouter un __str__
+    
     def input_score(self, paire):  # à retourner dans les resultats de Tour
         running = True
         while running:
@@ -41,18 +43,3 @@ class Match:
             except ValueError as error:
                 print("Erreur :", error)
 
-
-# m = Match(["FFFF", "KKK"])
-# m.attribution_couleur(["FFFF", "KKK"])
-# test = m.input_score(["FFFF", "KKK"])
-# print(test)
-
-
-# match1 = Match(["AAAAAA", "BBBBBB"])
-# match1.attribution_couleur(["AAAAAA", "BBBBBB"])
-# resultat_match = match1.attribution_point(["AAAAAA", "BBBBBB"])
-
-
-# paire = [12, 67]
-# match1 = Match(paire)
-# match1.input_score(paire)

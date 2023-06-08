@@ -79,5 +79,4 @@ class Player_View:
                 print("Erreur :", error)
 
     def create_profile_player(self):
-        return [self.id_player, self.name]#, self.forename, self.birthday]
-
+        return [self.id_player, self.name]  # , self.forename, self.birthday]

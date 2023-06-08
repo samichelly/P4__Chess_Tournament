@@ -18,28 +18,42 @@ class Tournament:
         self.id_match_joues = ["KH22332KH22333"]  # issue de class Tours
         self.description = about_tournament[3]
 
-    def test_func(self):
-        return self.name
+    def update_last_round(self, result_round):
+        self.list_round.append(result_round)
+        print("gccz")
+        return self.list_round[-1]
 
     def date_begin(self):
         self.date_top = get_day()
         return self.date_top
-    
+
     def date_end(self):
         self.date_stop = get_day()
         # return self.date_top
-    
+
     def get_current_round(self):
         self.current_round = len(self.list_round)
         return self.current_round
 
-
-
-    def get_players_list(self, players_list):
-        self.registered_players = players_list
+    def get_players_list(self, player):
+        self.registered_players.append(player)
         print(self.registered_players)
-        print("ggggg")
+        print(player)
         return self.registered_players
+
+    def update_score(self, game_result):  # game_result => tuple (id_joueur, point)
+        for player in self.registered_players:
+            for result in game_result:
+                for id in result:
+                    # print(result)
+                    # print(id)
+                    # print(f"player_name {player.idJoueur}")
+                    # print(f"result indiv {id[0]}")
+                    if player.idJoueur == str(id[0]):
+                        player.score += id[1]
+                        print("score")
+                        print(player.idJoueur, player.score)
+                        break
 
     # def classement(self, tableau):
     #     tableau.sort_values(by=["score"], ascending=False, inplace=True)
@@ -51,28 +65,20 @@ class Tournament:
     #         f"Tournoi {self.name} à {self.place}"
     # )  # , commence le {dateDeDebut} et se termine {dateDeFin}. Le tournoi est composé de {nbTours}. Tour actuel {nTourActuel}."
 
-    def sort_ranking(self, tuple_players):
-        return sorted(tuple_players, key=lambda x: x[1], reverse=True)
-        # print(dict(dic_players2))
-        # return dict(dic_players2)
+    def sort_ranking(self, players):
+        # tuple_players = []
+        self.registered_players = sorted(players, key=lambda x: x.score, reverse=True)
+        print(self.registered_players)
+        return self.registered_players
 
-    def match_played(self, paires):  # issue de la Class Tours
+    def match_played(self, paires):
         """Génération des id_match : id_match == id_j1+id_j2 et id_j2+id_j1"""
-        # print(paires)
         for paire in paires:
             paire.sort()
             self.id_match_joues.append("".join(map(str, paire)))
             paire.sort(reverse=True)
             self.id_match_joues.append("".join(map(str, paire)))
-        test = list(set(self.id_match_joues))
-        # print(test)
         return self.id_match_joues
 
     def test_round(self):  # issue de la Class Tours
         return self.id_match_joues
-
-
-# TT = Tournament(None, None, None, None)
-# TT.players_list()
-# dictionaire = {"AAA": 6, "BB": 6, "BZ": 5, "AB": 1}
-# TT.classement(dictionaire)
