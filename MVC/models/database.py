@@ -16,12 +16,14 @@ path = "C:/Users/samic/Documents/OpenClassRooms/PROJET_3/MVC/database/test.json"
 
 def save_data(data_models, table):
     print("fnonc")
-    table = {table: data_models}
+    data_to_save = {table: data_models}
+    print(table)
     with open(
         f"C:/Users/samic/Documents/OpenClassRooms/PROJET_3/MVC/database/{table}.json",
         "w",
     ) as file:
-        json_objet = jsonpickle.encode(table, indent=4)
+        json_objet = jsonpickle.encode(data_to_save, indent=4)
+        print(json_objet)
         file.write(json_objet)
 
 
@@ -31,11 +33,17 @@ def save_player(player_to_save, players_loaded, table):
         "w",
     ) as file:
         if players_loaded is None:
-            players_loaded = {"playertable": [{player_to_save.idplayer: player_to_save}]}
+            players_loaded = {
+                "playertable": [{player_to_save.idplayer: player_to_save}]
+            }
 
         else:
-            players_loaded["playertable"].append({player_to_save.idplayer: player_to_save})
-            players_loaded["playertable"] = sorted(players_loaded["playertable"], key=lambda x: x[next(iter(x))].name)
+            players_loaded["playertable"].append(
+                {player_to_save.idplayer: player_to_save}
+            )
+            players_loaded["playertable"] = sorted(
+                players_loaded["playertable"], key=lambda x: x[next(iter(x))].name
+            )
         print("aaaaaaaaa")
         json_objet = jsonpickle.encode(players_loaded, indent=4)
         file.write(json_objet)
@@ -48,8 +56,6 @@ def load_tournament(table):
         "r",
     ) as infile:
         json_str = infile.read()
-        # print("jjjj")
-        # print(json_str)
         json_objet = jsonpickle.decode(json_str)
     print("mmmmmmm")
     print(type(json_objet))
@@ -72,47 +78,80 @@ def load_tournament(table):
 
 
 def load_players(table):
-    print("Enregistrement en cours")
+    print("Chargement en cours")
     with open(
         f"C:/Users/samic/Documents/OpenClassRooms/PROJET_3/MVC/database/{table}.json",
         "r",
     ) as infile:
         json_str = infile.read()
-        print(json_str)
-        print("json_str")
         try:
-            print("dans le try")
             json_objet = jsonpickle.decode(json_str)
-            print("dans le try")
-            print(json_objet.keys())
-            print("json_obbbbjt")
-            # player = {
-            #     "ggggggg": {
-            #         "idplayer": json_objet.idplayer,
-            #         "name": json_objet.name,
-            #         "forename": json_objet.forename,
-            #         "fullname": json_objet.fullname,
-            #         "birthday": json_objet.birthday,
-            #         "score": json_objet.score,
-            #         "rank": json_objet.rank,
-            #     }
-            # }
             print("affichage player")
             print(json_objet)
+            print("testttt")
             return json_objet
         except Exception:
-            # json_objet = jsonpickle.decode(json_str)
-            print("tableau vide")
+            print("Aucun joueur enregistré en base de donnée")
             return None
-    # }
-    # print(tournoi)
-    # print("testççççççççç")
-    # # print(json_objet['name'])
-    # return tournoi
+
+
+def load_player(players_loaded, select_players):
+    players_selected = []
+    for i, player_ in enumerate(players_loaded["playertable"], start=1):
+        # print(player_)
+        # print(i)
+        if str(i) in select_players:
+            print(i)
+            # print(select_player)
+            player_data = next(iter(player_))
+            player_loading = {
+                "idplayer": player_[player_data].idplayer,
+                "name": player_[player_data].name,
+                "forename": player_[player_data].forename,
+                "birthday": player_[player_data].birthday,
+                "score": player_[player_data].score,
+                "rank": player_[player_data].rank,
+            }
+            print(player_loading)
+            players_selected.append(player_loading)
+    print(players_selected)
+    return players_selected
+
+
+# select_player = [3, 6]
+# players_loaded = load_players("player")
+# load_player(players_loaded, select_player)
+
+    # for i, player_ in enumerate(players_loaded["playertable"], start=1):
+    #     print("i")
+    #     print(i)
+    #     print(player_)
+    #     if str(i) in select_players:
+    #         players_selected.append(player_.values())
+    #         print("test")
+    #         # test = player_.values()
+    #         # print(test['fullname'])
+    #         print("players_selected")
+    #         print(players_selected)
+
+    # return players_selected
+
+
+
+# for i in players_loaded["playertable"]:
+#     player_data = next(iter(i))
+#     player_list = [
+#         i[player_data].idplayer,
+#         i[player_data].name,
+#         i[player_data].forename,
+#         i[player_data].fullname,
+#         i[player_data].birthday,
+#         i[player_data].score,
+#         i[player_data].rank,
+#     ]
 
 
 """
-
 def update_data(data_models, table, attribute_to_update):
     print("ipdate")
     # print(json_objet)

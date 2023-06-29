@@ -5,15 +5,25 @@ from player import Player, Players_Manager
 from round import Round
 from match import Match
 import database
+import reports
 
 
-def menu_tournament():
+def menu_tournament():  # prévoir de faire un quit tournament
     while True:
         tournament_menu = Tournament_Menu()
 
         if tournament_menu.menu == "1":
-            # génération des rapports
-            pass
+            print("consulter les rapports")
+            choice_reports = Tournament_Reports().select_rapport()
+            if choice_reports == "1":  # rapports tous joueurs
+                players_loaded = database.load_players("player")
+                reports.players_reports(players_loaded)
+
+                pass
+            elif choice_reports == "2":
+                # rapports tous tournoi
+                # ajouter un autre niveau de sélection au sein du tournoi
+                pass
 
         elif tournament_menu.menu == "2":
             # création de nouveau joueur (hors tournoi)
@@ -23,43 +33,60 @@ def menu_tournament():
                 )
                 if new_player == "O":
                     players_loaded = database.load_players("player")
-                    if players_loaded is not None:
-                        for i in players_loaded.values():
-                            for j in i:
-                                print(j)
-                                print("joueur affiché")
-                    else:
-                        pass
                     print(players_loaded)
                     print("playersloaded")
-                    # print(len(players_loaded))
                     player = Player(
                         Create_Player_View(manager=None).create_profile_player()
                     )
                     database.save_player(player, players_loaded, "player")
                 elif new_player == "N":
                     False
-                    tournament_menu = Tournament_Menu()
                 else:
                     print("Erreur : Entrée non valide")
 
         elif tournament_menu.menu == "3":
             tournament_def = Tournament(Tournament_Creation().about_tournament())
-            print(tournament_def.__dict__)
-            print(tournament_def.name)
             database.save_data(tournament_def, "tournament")
+            players_loaded = database.load_players("player")
+            # players_selection = []
             adding_player = True
             manager = Players_Manager()
             while adding_player:
                 add_player = str.upper(
-                    input("\nIncrivez un nouveau joueur ? O-Oui / N-Non\nChoix : ")
+                    input(
+                        "\n1) Charger des joueurs\n2) Incrire un nouveau joueur\n3) Quitter\nChoix : "
+                    )
                 )
-                if add_player == "O":
-                    player = Player(Create_Player_View(manager).create_profile_player())
+                if add_player == "1":
+                    reports.players_reports(players_loaded)
+                    input_text = input(
+                        "\nIndiquer les Index séparés par une virgule et un espace : "
+                    )
+                    print(type(input_text))
+                    print(input_text)
+
+                    players_selection = input_text.split(", ")
+                    print("gggze")
+                    print(players_selection)
+                    print(type(players_selection))
+                    for i in players_selection:
+                        print("i")
+                        print(i)
+                    players = database.load_player(players_loaded, players_selection)
+                    print("players")
+                    print(players)
+                    for i in players:
+                        player = Player(i)
+                        players_list = tournament_def.get_players_list(player)
+                    database.save_data(tournament_def, "tournament")
+                elif add_player == "2":
+                    player = Player(
+                        Create_Player_View(manager=None).create_profile_player()
+                    )
+                    database.save_player(player, players_loaded, "player")
                     print(player)
                     players_list = tournament_def.get_players_list(player)
-                    # print(f"player_list{players_list}")
-                elif add_player == "N":
+                elif add_player == "3":
                     adding_player = False
                 else:
                     print("Erreur : Entrée non valide")
@@ -75,6 +102,7 @@ def menu_tournament():
         else:
             print("Error selection")
 
+        ### TOURNOI EN JEU ###
         if tournament_menu.menu in ["3", "4"]:
             launch_round = True
             tournament_def.date_begin()
