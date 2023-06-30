@@ -1,67 +1,96 @@
-class Tournament_View:
+import jsonpickle
+
+
+class Tournament_Menu:
     def __init__(self):
-        self.tournament = self.menu_tournament()
-        self.name = self.name_tournament()
-        self.place = self.place_tournament()
-        self.number_round = self.number_of_round()
-        self.description = self.description_tournament()
+        self.menu = self.menu_tournament()
 
     def menu_tournament(self):
         running = True
         while running:
-            select = input("1 créer un tournoi\n2 charger un tournoi\nChoix :")
-            if select == "1":  # possible erreur
-                # creer un tournoi
-                running = False
-            elif select == "2":  # possible erreur
-                # charger un tournoi
+            select = int(
+                input(
+                    "\n1) Consulter les rapports\n2) Ajouter de nouveau joueur\n"
+                    "3) Créer un tournoi\n4) Charger un tournoi\n5) Quitter l'interface\nChoix : "
+                )
+            )
+            if select in {1, 2, 3, 4, 5}:
                 running = False
             else:
                 print("Entrée non valide")
-
-    def name_tournament(self):
-        self.name = input("\nEntrez le nom du tournoi : ")
-        # return self.name
-
-    def place_tournament(self):
-        self.place = input("Entrez le lieu : ")
-        # return self.place
-
-    def number_of_round(self):
-        nb_round = input("Indiquez le nombre de tour qui compose le tournoi :")
-        if nb_round.isnumeric() is False:
-            print("Erreur de saisi. Le tournoi sera de 4 tours par défaut")
-            self.number_round = 4
-        else:
-            print(f"le tournoi sera de {nb_round} tour(s)")
-            self.number_round = nb_round
-        # return self.number_round
-
-        # Envoyer vers le controlleur pour vérification
-
-    def description_tournament(self):
-        self.description = input("Entrez une description : ")
-        return self.description
-
-    def display_final_ranking(self, dic_joueur):  # get profil des joueurs
-        print("\nClassement final :\n")
-        # table_head =
-        # final_ranking = pd.DataFrame(columns=)
+        return select
 
     def launch_new_round(self):
-        running = True
-        while running:
+        while True:
             new_round = str.upper(
-                input("Lancez un nouveau tour ?\n O -oui\n N -non\nChoix : ")
+                input("\nLancer un nouveau tour ? O-oui / N-non\nChoix : ")
             )
-            if new_round == "O":  # possible erreur
-                running = False
+            if new_round == "O":
                 return True
-            elif new_round == "N":  # possible erreur
-                running = False
+            elif new_round == "N":
                 return False
             else:
                 print("Entrée non valide")
 
+    def display_final_ranking(self, table):  # get profil des joueurs
+        print("\nClassement final :\n")
+        print(table)
+
+
+class Tournament_Reports:
+    def __init__(self):
+        pass
+
+    def select_rapport(self):
+        return input(
+            "\nGénérer un rapport de :\n1) Listes de tous les joueurs\n2) Listes des tournois\nChoix : "
+        )
+
+
+class Tournament_Creation:
+    def __init__(self):
+        self.name = self._name_tournament()
+        self.place = self._place_tournament()
+        self.number_round = self._number_of_round()
+        self.description = self._description_tournament()
+
+    def _name_tournament(self):
+        while True:
+            self.name = input("\nEntrez le nom du tournoi : ")
+            if self.name != "":
+                False
+                return self.name
+            else:
+                print("Veuillez entrer un nom")
+
+    def _place_tournament(self):
+        self.place = input("Entrez le lieu : ")
+        return self.place
+
+    def _number_of_round(self):
+        nb_round = input("Indiquez le nombre de tour qui compose le tournoi : ")
+        if nb_round.isnumeric() is False:
+            self.number_round = 4
+            print(f"Entrée non valide. Tournoi de {self.number_round} tours")
+        else:
+            self.number_round = int(nb_round)
+            print(f"le tournoi sera de {self.number_round} tour(s)")
+        return self.number_round
+
+    def _description_tournament(self):
+        self.description = input("Entrez une description : ")
+        return self.description
+
     def about_tournament(self):
-        return [self.name, self.place, self.number_round, self.description]
+        return {
+            "name": self.name,
+            "place": self.place,
+            "date_top": "",
+            "date_stop": "",
+            "nb_round": self.number_round,
+            "current_round": 0,
+            "list_round": [],
+            "registered_players": [],
+            "id_match_played": [],
+            "description": self.description,
+        }

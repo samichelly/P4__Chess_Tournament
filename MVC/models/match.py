@@ -1,16 +1,17 @@
 import random
 
-# from Round import Round
-
 
 class Match:
     def __init__(self, paire):
         self.player1 = paire[0]
         self.player2 = paire[1]
-        self.scoreJ1 = 0
-        self.scoreJ2 = 0
+        self.scoreP1 = 0
+        self.scoreP2 = 0
         self.color1 = ""
         self.color2 = ""
+
+    def __str__(self):
+        return f"{self.player1}({self.color1}) : {self.scoreP1} pts\n{self.player2}({self.color2}) : {self.scoreP2} pts"
 
     def attribution_couleur(self, paire):
         random_color_choice = random.choice([True, False])
@@ -20,26 +21,31 @@ class Match:
         else:
             self.color1 = "Blanc"
             self.color2 = "Noir"
-        print(f"{self.player1} est {self.color1}, {self.player2} est {self.color2}")
 
-    #ajouter un __str__
-    
-    def input_score(self, paire):  # à retourner dans les resultats de Tour
+    def input_score(self, paire):
         running = True
         while running:
-            print(f"\nGagnant ?\n1 {self.player1}\n2 {self.player2}\n3 égalité")
+            print(f"\nGagnant ?\n1 {self.player1}({self.color1})\n2 {self.player2}({self.color2})\n3 égalité")
             result = input("Résultat : ")
-            try:
-                if result not in ["1", "2", "3"]:
-                    raise ValueError("Entrée incorrecte")
-                if result == "1":
-                    return ([paire[0], 1], [paire[1], 0])
-                elif result == "2":
-                    return ([paire[0], 0], [paire[1], 1])
-                else:
-                    return ([paire[0], 0.5], [paire[1], 0.5])
-                # else:
+            if result not in ["1", "2", "3"]:
+                print("Entrée incorrecte")
+            if result == "1":
+                self.scoreP1 = 1
+                return ([paire[0], 1], [paire[1], 0])
+            elif result == "2":
+                self.scoreP2 = 1
+                return ([paire[0], 0], [paire[1], 1])
+            else:
+                self.scoreP1 = 0.5
+                self.scoreP2 = 0.5
+                return ([paire[0], 0.5], [paire[1], 0.5])
 
-            except ValueError as error:
-                print("Erreur :", error)
-
+    # def save_match(self):
+    #     return {
+    #         "player1": self.player1,
+    #         "player2": self.player2,
+    #         "scoreP1": self.scoreP1,
+    #         "scoreP2": self.scoreP2,
+    #         "colorP1": self.color1,
+    #         "colorP2": self.color2,
+    #     }

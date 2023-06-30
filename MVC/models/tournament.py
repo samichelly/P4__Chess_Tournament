@@ -1,27 +1,25 @@
-from Player import Player
+import pandas as pd
 from get_datetime import get_day
-
-# from view import Tournament
-# from controller import DateTime
 
 
 class Tournament:
     def __init__(self, about_tournament):
-        self.name = about_tournament[0]
-        self.place = about_tournament[1]
-        self.date_top = ""
-        self.date_stop = ""
-        self.nbTours = about_tournament[2]
-        self.current_round = ""
-        self.list_round = []
-        self.registered_players = []
-        self.id_match_joues = ["KH22332KH22333"]  # issue de class Tours
-        self.description = about_tournament[3]
+        self.name = about_tournament['name']
+        self.place = about_tournament['place']
+        self.date_top = about_tournament['date_top']
+        self.date_stop = about_tournament['date_stop']
+        self.nb_round = about_tournament['nb_round']
+        self.current_round = about_tournament['current_round']
+        self.list_round = about_tournament['list_round']
+        self.registered_players = about_tournament['registered_players']
+        self.id_match_played = about_tournament['id_match_played']
+        self.description = about_tournament['description']
 
-    def update_last_round(self, result_round):
-        self.list_round.append(result_round)
-        print("gccz")
-        return self.list_round[-1]
+    def __str__(self):
+        if self.date_stop == "":
+            return f"\nTournoi : {self.name} ({self.place}) du {self.date_top}"
+        else:
+            return f"\nTournoi : {self.name} ({self.place}) débuté le {self.date_top} et terminé le {self.date_stop}. Les résultats :\n{self.list_round}"
 
     def date_begin(self):
         self.date_top = get_day()
@@ -35,50 +33,65 @@ class Tournament:
         self.current_round = len(self.list_round)
         return self.current_round
 
+    def update_last_round(self, result_round):
+        self.list_round.append(result_round)
+        return self.list_round[-1]
+
     def get_players_list(self, player):
         self.registered_players.append(player)
-        print(self.registered_players)
-        print(player)
+        print(f"Joueurs enregistré(s) : {len(self.registered_players)}")
         return self.registered_players
-
-    def update_score(self, game_result):  # game_result => tuple (id_joueur, point)
-        for player in self.registered_players:
-            for result in game_result:
-                for id in result:
-                    # print(result)
-                    # print(id)
-                    # print(f"player_name {player.idJoueur}")
-                    # print(f"result indiv {id[0]}")
-                    if player.idJoueur == str(id[0]):
-                        player.score += id[1]
-                        print("score")
-                        print(player.idJoueur, player.score)
-                        break
-
-    # def classement(self, tableau):
-    #     tableau.sort_values(by=["score"], ascending=False, inplace=True)
-    #     print(tableau)
-
-    # Remplacer par __str__ ?
-    # def informations_tournoi(self):  # , listeJoueursEnregistres):
-    #     print(
-    #         f"Tournoi {self.name} à {self.place}"
-    # )  # , commence le {dateDeDebut} et se termine {dateDeFin}. Le tournoi est composé de {nbTours}. Tour actuel {nTourActuel}."
-
-    def sort_ranking(self, players):
-        # tuple_players = []
-        self.registered_players = sorted(players, key=lambda x: x.score, reverse=True)
-        print(self.registered_players)
+    
+    def sort_alphabetic(self, players):
+        self.registered_players = sorted(players, key=lambda x: x.name)
         return self.registered_players
 
     def match_played(self, paires):
         """Génération des id_match : id_match == id_j1+id_j2 et id_j2+id_j1"""
         for paire in paires:
             paire.sort()
-            self.id_match_joues.append("".join(map(str, paire)))
+            self.id_match_played.append("".join(map(str, paire)))
             paire.sort(reverse=True)
-            self.id_match_joues.append("".join(map(str, paire)))
-        return self.id_match_joues
+            self.id_match_played.append("".join(map(str, paire)))
+        return self.id_match_played
 
-    def test_round(self):  # issue de la Class Tours
-        return self.id_match_joues
+    def test_rematch(self):
+        return self.id_match_played
+
+    def update_score(self, game_result):  # game_result => tuple (id_joueur, point)
+        for player in self.registered_players:
+            for result in game_result:
+                for id in result:
+                    if player.idplayer == str(id[0]):
+                        player.score += id[1]
+                        print("score")
+                        print(player.idplayer, player.score)
+                        break
+
+    def sort_ranking(self, players):
+        self.registered_players = sorted(players, key=lambda x: x.score, reverse=True)
+        return self.registered_players
+
+    def final_ranking(self, players):
+        head_table = ["Identifiant", "Nom Complet", "Points"]  # add player_rank
+        ranking = pd.DataFrame(columns=head_table)
+        # ranking.index = range(1, len(players))
+        for player in players:
+            profile_player = [player.idplayer, player.fullname, player.score]
+            ranking.loc[len(ranking)] = profile_player
+        ranking.sort_values(by=["Points"], ascending=False)
+        # Ajouter le trie du classement par rang + index qui conmmence par 1
+        return ranking
+
+    # def save_tournament(self):
+    #     return {
+    #         "tournament_name": self.name,
+    #         "tournament_place": self.place,
+    #         "date_top": self.date_top,
+    #         "date_stop": self.date_stop,
+    #         "number_of_rounds": self.nbRound,
+    #         "current_round": self.current_round,
+    #         "rounds": self.list_round,
+    #         "registered_players": self.registered_players,
+    #         "description": self.description,
+    #     }

@@ -12,21 +12,18 @@ def menu_tournament():  # prévoir de faire un quit tournament
     while True:
         tournament_menu = Tournament_Menu()
 
-        if tournament_menu.menu == "1":
+        if tournament_menu.menu == 1:
             print("consulter les rapports")
             choice_reports = Tournament_Reports().select_rapport()
             if choice_reports == "1":  # rapports tous joueurs
                 players_loaded = database.load_players("player")
                 reports.players_reports(players_loaded)
 
-                pass
             elif choice_reports == "2":
-                # rapports tous tournoi
-                # ajouter un autre niveau de sélection au sein du tournoi
-                pass
+                tournament_loaded = database.load_tournament("tournament")
+                reports.tournaments_reports(tournament_loaded)
 
-        elif tournament_menu.menu == "2":
-            # création de nouveau joueur (hors tournoi)
+        elif tournament_menu.menu == 2:
             while True:
                 new_player = str.upper(
                     input("\nIncrivez un nouveau joueur ? O-Oui / N-Non\nChoix : ")
@@ -44,73 +41,77 @@ def menu_tournament():  # prévoir de faire un quit tournament
                 else:
                     print("Erreur : Entrée non valide")
 
-        elif tournament_menu.menu == "3":
+        elif tournament_menu.menu == 3:
             tournament_def = Tournament(Tournament_Creation().about_tournament())
-            database.save_data(tournament_def, "tournament")
+            tournament_loaded = database.load_tournament("tournament")
+            database.save_tournament(tournament_def, tournament_loaded, "tournament")
             players_loaded = database.load_players("player")
-            # players_selection = []
-            adding_player = True
             manager = Players_Manager()
-            while adding_player:
+            while True:
                 add_player = str.upper(
                     input(
                         "\n1) Charger des joueurs\n2) Incrire un nouveau joueur\n3) Quitter\nChoix : "
                     )
                 )
+
                 if add_player == "1":
                     reports.players_reports(players_loaded)
                     input_text = input(
                         "\nIndiquer les Index séparés par une virgule et un espace : "
                     )
-                    print(type(input_text))
-                    print(input_text)
-
                     players_selection = input_text.split(", ")
-                    print("gggze")
-                    print(players_selection)
-                    print(type(players_selection))
-                    for i in players_selection:
-                        print("i")
-                        print(i)
                     players = database.load_player(players_loaded, players_selection)
-                    print("players")
-                    print(players)
                     for i in players:
                         player = Player(i)
                         players_list = tournament_def.get_players_list(player)
-                    database.save_data(tournament_def, "tournament")
+
                 elif add_player == "2":
-                    player = Player(
-                        Create_Player_View(manager=None).create_profile_player()
-                    )
-                    database.save_player(player, players_loaded, "player")
-                    print(player)
-                    players_list = tournament_def.get_players_list(player)
+                    while True:
+                        player = Player(
+                            Create_Player_View(manager=None).create_profile_player()
+                        )
+                        database.save_player(player, players_loaded, "player")
+                        print(player)
+                        players_list = tournament_def.get_players_list(player)
+                        add_new_player = str.upper(
+                            input(
+                                "Ajouter un nouveau joueur :\nO-Oui\nN-Non\nChoix :  "
+                            )
+                        )
+                        if add_new_player == "O":
+                            pass
+                        elif add_new_player == "N":
+                            break
+                        else:
+                            print("Erreur : Entrée non valide")
                 elif add_player == "3":
-                    adding_player = False
+                    break
                 else:
                     print("Erreur : Entrée non valide")
-            database.save_data(tournament_def, "tournament")
+                tournament_loaded = database.load_tournament("tournament")
+                database.save_tournament(
+                    tournament_def, tournament_loaded, "tournament"
+                )
 
-        elif tournament_menu.menu == "4":
+        elif tournament_menu.menu == 4:
             print("chargement")
             table = "tournament"
             tournoi_charge = database.load_tournament(table)
             tournament_def = Tournament(tournoi_charge)
             players_list = tournoi_charge["registered_players"]
 
+        elif tournament_menu.menu == 5:
+            break
+
         else:
             print("Error selection")
 
         ### TOURNOI EN JEU ###
-        if tournament_menu.menu in ["3", "4"]:
-            launch_round = True
-            tournament_def.date_begin()
+        if tournament_menu.menu in [3, 4]:
             while tournament_def.current_round < tournament_def.nb_round:
-                if launch_round:
-                    launch_new_round = tournament_menu.launch_new_round()
-                    if launch_new_round is False:
-                        break
+                tournament_def.date_begin()
+                launch_new_round = tournament_menu.launch_new_round()
+                if launch_new_round is True:
                     # tournament_def.sort_ranking(players_list)
                     current_round = tournament_def.get_current_round() + 1
                     new_round = Round(current_round)
@@ -124,7 +125,10 @@ def menu_tournament():  # prévoir de faire un quit tournament
                     print("rrr")
                     print(tournament_def.id_match_played)
                     new_round.clean_exempt_match(pairs_generated)
-                    database.save_data(tournament_def, "tournament")
+                    tournament_loaded = database.load_tournament("tournament")
+                    database.save_tournament(
+                        tournament_def, tournament_loaded, "tournament"
+                    )
 
                     # lancer les matchs
                     result_round = []
@@ -133,7 +137,6 @@ def menu_tournament():  # prévoir de faire un quit tournament
                         match.attribution_couleur(i)
                         result_game = match.input_score(i)
                         print(match)
-                        database.save_data(match, "match")
                         result_round.append(result_game)
                     new_round.time_end()
                     # print("tesssst")
@@ -142,22 +145,33 @@ def menu_tournament():  # prévoir de faire un quit tournament
                     print(new_round)
                     print(result_round)
                     update_tournament = tournament_def.update_last_round(result_round)
-                    database.save_data(new_round, "round")
                     del new_round
                     print(update_tournament)
                     print(tournament_def.list_round)
                     tournament_def.update_score(result_round)
-                    database.save_data(tournament_def, "tournament")
+                    tournament_loaded = database.load_tournament("tournament")
+                    database.save_tournament(
+                        tournament_def, tournament_loaded, "tournament"
+                    )
+
                 else:
-                    print("fin du tournoi ou autres actions")
-                    tournament_def.date_end()
-                    sorted_players = tournament_def.sort_ranking(players_list)
-                    ranking = tournament_def.final_ranking(sorted_players)
-                    tournament_menu.display_final_ranking(ranking)
-                    database.save_data(tournament_def, "tournament")
-                    for i in players_list:
-                        i.set_score_to_score()
-            print("fini")
+                    tournament_loaded = database.load_tournament("tournament")
+                    database.save_tournament(
+                        tournament_def, tournament_loaded, "tournament"
+                    )
+                    break
+                    # faire autre actions
+
+            #     if         #actions à faire suite au tournoi
+            #         print("fin du tournoi ou autres actions (comme sauve)")
+            #         tournament_def.date_end()
+            #         sorted_players = tournament_def.sort_ranking(players_list)
+            #         ranking = tournament_def.final_ranking(sorted_players)
+            #         tournament_menu.display_final_ranking(ranking)
+            #         database.save_tournament(tournament_def, "tournament")
+            #         for i in players_list:
+            #             i.set_score_to_score()
+            # print("fini")
 
 
 menu_tournament()
