@@ -15,11 +15,7 @@ path = "C:/Users/samic/Documents/OpenClassRooms/PROJET_3/MVC/database/test.json"
 
 
 def save_tournament(tournament_to_save, tournament_loaded, table):
-    print("fnonc")
-    # data_to_save = {tournament_to_save.name: tournament_to_save}
-    print(tournament_loaded)
-    print("data_to_dave")
-    print(tournament_to_save)
+    print("\nEnregistrement en cours\n")
     with open(
         f"C:/Users/samic/Documents/OpenClassRooms/PROJET_3/MVC/database/{table}.json",
         "w",
@@ -36,7 +32,6 @@ def save_tournament(tournament_to_save, tournament_loaded, table):
                     tournament_loaded["tournament_table"][i] = {
                         tournament_to_save.name: tournament_to_save
                     }
-                    print(tournament_)
                     tournament_saved = True
             if tournament_saved is False:
                 tournament_loaded["tournament_table"].append(
@@ -68,12 +63,11 @@ def save_player(player_to_save, players_loaded, table):
             players_loaded["playertable"] = sorted(
                 players_loaded["playertable"], key=lambda x: x[next(iter(x))].name
             )
-        print("aaaaaaaaa")
         json_objet = jsonpickle.encode(players_loaded, indent=4)
         file.write(json_objet)
 
 
-def load_tournament(table):
+def read_tournament_json(table):
     print("Enregistrement en cours")
     with open(
         f"C:/Users/samic/Documents/OpenClassRooms/PROJET_3/MVC/database/{table}.json",
@@ -88,35 +82,7 @@ def load_tournament(table):
             return None
 
 
-def _load_tournament(table):
-    print("Enregistrement en cours")
-    with open(
-        f"C:/Users/samic/Documents/OpenClassRooms/PROJET_3/MVC/database/{table}.json",
-        "r",
-    ) as infile:
-        json_str = infile.read()
-        json_objet = jsonpickle.decode(json_str)
-        print("mmmmmmm")
-        print(type(json_objet))
-        print(json_objet)
-        tournoi = {
-            "name": json_objet["tournament"].name,
-            "place": json_objet["tournament"].place,
-            "date_top": json_objet["tournament"].date_top,
-            "date_stop": json_objet["tournament"].date_stop,
-            "nb_round": json_objet["tournament"].nb_round,
-            "current_round": json_objet["tournament"].current_round,
-            "list_round": json_objet["tournament"].list_round,
-            "registered_players": json_objet["tournament"].registered_players,
-            "id_match_played": json_objet["tournament"].id_match_played,
-            "description": json_objet["tournament"].description,
-        }
-    print(tournoi)
-    print("testççççççççç")
-    return tournoi
-
-
-def load_players(table):
+def read_players_json(table):
     print("Chargement en cours")
     with open(
         f"C:/Users/samic/Documents/OpenClassRooms/PROJET_3/MVC/database/{table}.json",
@@ -129,6 +95,56 @@ def load_players(table):
         except Exception:
             print("Aucun joueur enregistré en base de donnée")
             return None
+
+
+def _load_tournament_json(table):
+    print("Enregistrement en cours")
+    with open(
+        f"C:/Users/samic/Documents/OpenClassRooms/PROJET_3/MVC/database/{table}.json",
+        "r",
+    ) as infile:
+        json_str = infile.read()
+        json_objet = jsonpickle.decode(json_str)
+        print("mmmmmmm")
+        print(type(json_objet))
+        print(json_objet)
+        tournoi = {
+            "name": tournament_["tournament_data"].name,
+            "place": tournament_["tournament_data"].place,
+            "date_top": tournament_["tournament_data"].date_top,
+            "date_stop": tournament_["tournament_data"].date_stop,
+            "nb_round": tournament_["tournament_data"].nb_round,
+            "current_round": tournament_["tournament_data"].current_round,
+            "list_round": tournament_["tournament_data"].list_round,
+            "registered_players": tournament_["tournament_data"].registered_players,
+            "id_match_played": tournament_["tournament_data"].id_match_played,
+            "description": tournament_["tournament_data"].description,
+        }
+    print(tournoi)
+    print("testççççççççç")
+    return tournoi
+
+
+def load_tournament_json(tournament_loaded, select_tournament):
+    print("Chargement en cours")
+    for i, tournament_ in enumerate(tournament_loaded["tournament_table"], start=1):
+        if str(i) in select_tournament:
+            tournament_data = next(iter(tournament_))
+            tournament_loading = {
+                "name": tournament_[tournament_data].name,
+                "place": tournament_[tournament_data].place,
+                "date_top": tournament_[tournament_data].date_top,
+                "date_stop": tournament_[tournament_data].date_stop,
+                "nb_round": tournament_[tournament_data].nb_round,
+                "current_round": tournament_[tournament_data].current_round,
+                "list_round": tournament_[tournament_data].list_round,
+                "registered_players": tournament_[tournament_data].registered_players,
+                "id_match_played": tournament_[tournament_data].id_match_played,
+                "description": tournament_[tournament_data].description,
+            }
+    print(tournament_loading)
+    print("testççççççççç")
+    return tournament_loading
 
 
 def load_player(players_loaded, select_players):
@@ -154,34 +170,3 @@ def load_player(players_loaded, select_players):
 # select_player = [3, 6]
 # players_loaded = load_players("player")
 # load_player(players_loaded, select_player)
-
-# for i, player_ in enumerate(players_loaded["playertable"], start=1):
-#     print("i")
-#     print(i)
-#     print(player_)
-#     if str(i) in select_players:
-#         players_selected.append(player_.values())
-#         print("test")
-#         # test = player_.values()
-#         # print(test['fullname'])
-#         print("players_selected")
-#         print(players_selected)
-
-# return players_selected
-
-
-# for i in players_loaded["playertable"]:
-#     player_data = next(iter(i))
-#     player_list = [
-#         i[player_data].idplayer,
-#         i[player_data].name,
-#         i[player_data].forename,
-#         i[player_data].fullname,
-#         i[player_data].birthday,
-#         i[player_data].score,
-#         i[player_data].rank,
-#     ]
-
-
-# if not os.path.exists(f"output/{categorie}"):
-#     os.makedirs(f"output/{categorie}")

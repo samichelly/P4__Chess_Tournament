@@ -15,12 +15,12 @@ def menu_tournament():  # prévoir de faire un quit tournament
         if tournament_menu.menu == 1:
             print("consulter les rapports")
             choice_reports = Tournament_Reports().select_rapport()
-            if choice_reports == "1":  # rapports tous joueurs
-                players_loaded = database.load_players("player")
+            if choice_reports == "1":
+                players_loaded = database.read_players_json("player")
                 reports.players_reports(players_loaded)
 
             elif choice_reports == "2":
-                tournament_loaded = database.load_tournament("tournament")
+                tournament_loaded = database.read_tournament_json("tournament")
                 reports.tournaments_reports(tournament_loaded)
 
         elif tournament_menu.menu == 2:
@@ -29,7 +29,7 @@ def menu_tournament():  # prévoir de faire un quit tournament
                     input("\nIncrivez un nouveau joueur ? O-Oui / N-Non\nChoix : ")
                 )
                 if new_player == "O":
-                    players_loaded = database.load_players("player")
+                    players_loaded = database.read_players_json("player")
                     print(players_loaded)
                     print("playersloaded")
                     player = Player(
@@ -43,9 +43,9 @@ def menu_tournament():  # prévoir de faire un quit tournament
 
         elif tournament_menu.menu == 3:
             tournament_def = Tournament(Tournament_Creation().about_tournament())
-            tournament_loaded = database.load_tournament("tournament")
+            tournament_loaded = database.read_tournament_json("tournament")
             database.save_tournament(tournament_def, tournament_loaded, "tournament")
-            players_loaded = database.load_players("player")
+            players_loaded = database.read_players_json("player")
             manager = Players_Manager()
             while True:
                 add_player = str.upper(
@@ -56,10 +56,10 @@ def menu_tournament():  # prévoir de faire un quit tournament
 
                 if add_player == "1":
                     reports.players_reports(players_loaded)
-                    input_text = input(
+                    input_players_selection = input(
                         "\nIndiquer les Index séparés par une virgule et un espace : "
                     )
-                    players_selection = input_text.split(", ")
+                    players_selection = input_players_selection.split(", ")
                     players = database.load_player(players_loaded, players_selection)
                     for i in players:
                         player = Player(i)
@@ -74,9 +74,7 @@ def menu_tournament():  # prévoir de faire un quit tournament
                         print(player)
                         players_list = tournament_def.get_players_list(player)
                         add_new_player = str.upper(
-                            input(
-                                "Ajouter un nouveau joueur :\nO-Oui\nN-Non\nChoix :  "
-                            )
+                            input("Ajouter un nouveau joueur :\nO-Oui\nN-Non\nChoix : ")
                         )
                         if add_new_player == "O":
                             pass
@@ -88,17 +86,24 @@ def menu_tournament():  # prévoir de faire un quit tournament
                     break
                 else:
                     print("Erreur : Entrée non valide")
-                tournament_loaded = database.load_tournament("tournament")
+                tournament_loaded = database.read_tournament_json("tournament")
                 database.save_tournament(
                     tournament_def, tournament_loaded, "tournament"
                 )
 
         elif tournament_menu.menu == 4:
+            tournament_loaded = database.read_players_json("tournament")
+            reports.tournaments_reports(tournament_loaded)
+            select_tournament = input(
+                "\nIndiquer les Index séparés par une virgule et un espace : "
+            )
             print("chargement")
-            table = "tournament"
-            tournoi_charge = database.load_tournament(table)
+            tournoi_charge = database.load_tournament_json(
+                tournament_loaded, select_tournament
+            )
+            print("réussie")
             tournament_def = Tournament(tournoi_charge)
-            players_list = tournoi_charge["registered_players"]
+            players_list = tournament_def.registered_players
 
         elif tournament_menu.menu == 5:
             break
@@ -125,7 +130,7 @@ def menu_tournament():  # prévoir de faire un quit tournament
                     print("rrr")
                     print(tournament_def.id_match_played)
                     new_round.clean_exempt_match(pairs_generated)
-                    tournament_loaded = database.load_tournament("tournament")
+                    tournament_loaded = database.read_tournament_json("tournament")
                     database.save_tournament(
                         tournament_def, tournament_loaded, "tournament"
                     )
@@ -149,13 +154,13 @@ def menu_tournament():  # prévoir de faire un quit tournament
                     print(update_tournament)
                     print(tournament_def.list_round)
                     tournament_def.update_score(result_round)
-                    tournament_loaded = database.load_tournament("tournament")
+                    tournament_loaded = database.read_tournament_json("tournament")
                     database.save_tournament(
                         tournament_def, tournament_loaded, "tournament"
                     )
 
                 else:
-                    tournament_loaded = database.load_tournament("tournament")
+                    tournament_loaded = database.read_tournament_json("tournament")
                     database.save_tournament(
                         tournament_def, tournament_loaded, "tournament"
                     )
