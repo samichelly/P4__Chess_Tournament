@@ -15,7 +15,6 @@ class Round:
         else:
             return f"{self.name} débuté à {self.time_top} et terminé à {self.time_stop}. \nRésultats :\n{self.matchs_round}"
 
-    # ajouter un player fictif si nombre de joueur impair
     def pairs_generation(
         self, players_ranked, id_match_played
     ):  # Classement trié par score / player_ranked = obj player
@@ -70,12 +69,3 @@ class Round:
     def time_end(self):
         self.time_stop = get_time()
         # return self.date_top
-
-    # def save_round(self):
-    #     return {
-    #         "idround": self.idround,
-    #         "round": self.name,
-    #         "time_top": self.time_top,
-    #         "time_stop": self.time_stop,
-    #         "matchs": self.matchs_round,
-    #     }

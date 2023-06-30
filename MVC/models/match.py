@@ -25,7 +25,9 @@ class Match:
     def input_score(self, paire):
         running = True
         while running:
-            print(f"\nGagnant ?\n1 {self.player1}({self.color1})\n2 {self.player2}({self.color2})\n3 égalité")
+            print(
+                f"\nGagnant ?\n1 {self.player1}({self.color1})\n2 {self.player2}({self.color2})\n3 égalité"
+            )
             result = input("Résultat : ")
             if result not in ["1", "2", "3"]:
                 print("Entrée incorrecte")
@@ -39,13 +41,3 @@ class Match:
                 self.scoreP1 = 0.5
                 self.scoreP2 = 0.5
                 return ([paire[0], 0.5], [paire[1], 0.5])
-
-    # def save_match(self):
-    #     return {
-    #         "player1": self.player1,
-    #         "player2": self.player2,
-    #         "scoreP1": self.scoreP1,
-    #         "scoreP2": self.scoreP2,
-    #         "colorP1": self.color1,
-    #         "colorP2": self.color2,
-    #     }
