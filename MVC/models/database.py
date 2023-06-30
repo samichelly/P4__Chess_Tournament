@@ -68,7 +68,6 @@ def save_player(player_to_save, players_loaded, table):
 
 
 def read_tournament_json(table):
-    print("Enregistrement en cours")
     with open(
         f"C:/Users/samic/Documents/OpenClassRooms/PROJET_3/MVC/database/{table}.json",
         "r",
@@ -83,7 +82,6 @@ def read_tournament_json(table):
 
 
 def read_players_json(table):
-    print("Chargement en cours")
     with open(
         f"C:/Users/samic/Documents/OpenClassRooms/PROJET_3/MVC/database/{table}.json",
         "r",
@@ -95,34 +93,6 @@ def read_players_json(table):
         except Exception:
             print("Aucun joueur enregistré en base de donnée")
             return None
-
-
-def _load_tournament_json(table):
-    print("Enregistrement en cours")
-    with open(
-        f"C:/Users/samic/Documents/OpenClassRooms/PROJET_3/MVC/database/{table}.json",
-        "r",
-    ) as infile:
-        json_str = infile.read()
-        json_objet = jsonpickle.decode(json_str)
-        print("mmmmmmm")
-        print(type(json_objet))
-        print(json_objet)
-        tournoi = {
-            "name": tournament_["tournament_data"].name,
-            "place": tournament_["tournament_data"].place,
-            "date_top": tournament_["tournament_data"].date_top,
-            "date_stop": tournament_["tournament_data"].date_stop,
-            "nb_round": tournament_["tournament_data"].nb_round,
-            "current_round": tournament_["tournament_data"].current_round,
-            "list_round": tournament_["tournament_data"].list_round,
-            "registered_players": tournament_["tournament_data"].registered_players,
-            "id_match_played": tournament_["tournament_data"].id_match_played,
-            "description": tournament_["tournament_data"].description,
-        }
-    print(tournoi)
-    print("testççççççççç")
-    return tournoi
 
 
 def load_tournament_json(tournament_loaded, select_tournament):
@@ -165,8 +135,3 @@ def load_player(players_loaded, select_players):
             players_selected.append(player_loading)
     print(players_selected)
     return players_selected
-
-
-# select_player = [3, 6]
-# players_loaded = load_players("player")
-# load_player(players_loaded, select_player)

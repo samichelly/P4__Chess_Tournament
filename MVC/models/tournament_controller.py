@@ -18,14 +18,19 @@ def generate_reports():
         elif choice_reports == 2:
             tournament_loaded = database.read_tournament_json("tournament")
             reports.tournaments_reports(tournament_loaded)
-            diplay_tournament_details = str.upper(input("Afficher des détails sur un tournoi\nO-Oui\nN-Non\nChoix : "))
+            diplay_tournament_details = str.upper(
+                input("Afficher des détails sur un tournoi\nO-Oui\nN-Non\nChoix : ")
+            )
             if diplay_tournament_details == "O":
                 select_tournament = input("Indiquer l'index du tournoi à afficher : ")
                 choice_details = Tournament_Reports().tournament_details()
                 if choice_details in [1, 2]:
-                    tournament_details = database.load_tournament_json(tournament_loaded, select_tournament)
-                    reports.tournaments_reports_details(tournament_details, choice_details)
-
+                    tournament_details = database.load_tournament_json(
+                        tournament_loaded, select_tournament
+                    )
+                    reports.tournaments_reports_details(
+                        tournament_details, choice_details
+                    )
 
                 elif choice_details == "2":
                     tournament_loaded = database.read_tournament_json("tournament")
@@ -103,7 +108,6 @@ def create_tournament():
             print("Erreur : Entrée non valide")
         tournament_loaded = database.read_tournament_json("tournament")
         database.save_tournament(tournament_def, tournament_loaded, "tournament")
-        
 
 
 def load_tournament():
@@ -116,19 +120,17 @@ def load_tournament():
         reading_tournament, select_tournament
     )
     print("chargement réussi")
-#Afficher un recap des informations précédentes
+    # Afficher un recap des informations précédentes
     return Tournament(tournament_loaded)
 
 
 def competition(tournament_def):
     players_list = tournament_def.registered_players
-    while tournament_def.current_round < tournament_def.nb_round:
-        tournament_def.date_begin()
+    tournament_def.date_begin()
+    while tournament_def.current_round < (tournament_def.nb_round - 1):
         launch_new_round = Tournament_Menu().launch_new_round()
         if launch_new_round is True:
-            # tournament_def.sort_ranking(players_list)
-            current_round = tournament_def.get_current_round() + 1
-            new_round = Round(current_round)
+            new_round = Round(tournament_def.get_current_round())
             print(new_round)
             pairs_generated = new_round.pairs_generation(
                 tournament_def.sort_ranking(players_list),
@@ -147,26 +149,30 @@ def competition(tournament_def):
             for i in pairs_generated:
                 match = Match(i)
                 match.attribution_couleur(i)
-                result_game = match.input_score(i)                                          #
+                result_game = match.input_score(i)  #
 
                 print(match)
 
-                result_round.append(result_game)                                            #
+                result_round.append(result_game)  #
 
             new_round.time_end()
-            
-            result_round = new_round.results_round(result_round)                            #
+
+            result_round = new_round.results_round(result_round)  #
 
             print(new_round)
             print(result_round)
 
-            update_tournament = tournament_def.update_last_round(result_round)              #
+            #########
 
+            tournament_def.update_last_round(new_round)
             del new_round
-            print(update_tournament)
-            print(tournament_def.list_round)
 
-            tournament_def.update_score(result_round)                                       #
+            #########
+
+            # print(update_tournament)
+            # print(tournament_def.list_round)
+
+            tournament_def.update_score(result_round)  #
 
             tournament_loaded = database.read_tournament_json("tournament")
             database.save_tournament(tournament_def, tournament_loaded, "tournament")

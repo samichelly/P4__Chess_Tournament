@@ -9,8 +9,6 @@ def players_reports(players_loaded):
         "PRENOM",
         "NOM COMPLET",
         "DATE DE NAISSANCE",
-        "SCORE",
-        "RANG",
     ]
     for i in players_loaded["playertable"]:
         player_data = next(iter(i))
@@ -20,8 +18,6 @@ def players_reports(players_loaded):
             i[player_data].forename,
             i[player_data].fullname,
             i[player_data].birthday,
-            i[player_data].score,
-            i[player_data].rank,
         ]
         reports_players.add_row(player_list)
     reports_players.add_autoindex()
@@ -41,6 +37,51 @@ def tournaments_reports(tournaments_loaded):
         reports_tournaments.add_row(tournament_list)
     reports_tournaments.add_autoindex()
     print(reports_tournaments)
+
+
+def tournaments_reports_details(tournament_loaded, choice_details):
+    reports_details_tournament = PrettyTable()
+    if choice_details == 1:
+        reports_details_tournament.field_names = [
+            "Identifiant",
+            "Nom",
+            "Prénom",
+            "Nom complet",
+            "Date de naissance",
+            "Score",
+            "Rang",
+        ]
+        for i in tournament_loaded["registered_players"]:
+            players_list = [
+                i.idplayer,
+                i.name,
+                i.forename,
+                i.fullname,
+                i.birthday,
+                i.score,
+                i.rank,
+            ]
+            reports_details_tournament.add_row(players_list)
+    else:
+        reports_details_tournament.field_names = [
+            "Tour",
+            "Début du tour",
+            "Fin du tour",
+            "Liste des matchs",
+        ]
+        for i in tournament_loaded["list_round"]:
+            print("nuage")
+            print(i)
+            rounds_list = [
+                i.name,
+                i.time_top,
+                i.time_stop,
+                i.matchs_round,
+            ]
+            reports_details_tournament.add_row(rounds_list)
+
+    reports_details_tournament.add_autoindex()
+    print(reports_details_tournament)
 
     # name = tournaments_loaded["name"]
     # date_top = tournaments_loaded["date_top"]

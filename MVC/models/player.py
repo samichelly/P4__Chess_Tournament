@@ -32,12 +32,3 @@ class Player:
 
     def set_score_to_zero(self):
         self.score = 0
-
-    # def save_player(self):
-    #     return {
-    #         "id_player": self.idplayer,
-    #         "name": self.name,
-    #         "forename": self.forename,
-    #         "birthday": self.birthday,
-    #         "score": self.score,
-    #     }

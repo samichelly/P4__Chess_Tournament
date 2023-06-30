@@ -30,12 +30,12 @@ class Tournament:
         # return self.date_top
 
     def get_current_round(self):
-        self.current_round = len(self.list_round)
+        self.current_round = len(self.list_round) + 1
         return self.current_round
 
     def update_last_round(self, result_round):
         self.list_round.append(result_round)
-        return self.list_round[-1]
+        # return self.list_round[-1]
 
     def get_players_list(self, player):
         self.registered_players.append(player)

@@ -1,13 +1,6 @@
-import jsonpickle
-
-
 class Tournament_Menu:
-    def __init__(self):
-        self.menu = self.menu_tournament()
-
     def menu_tournament(self):
-        running = True
-        while running:
+        while True:
             select = int(
                 input(
                     "\n1) Consulter les rapports\n2) Ajouter de nouveau joueur\n"
@@ -15,10 +8,9 @@ class Tournament_Menu:
                 )
             )
             if select in {1, 2, 3, 4, 5}:
-                running = False
+                return select
             else:
                 print("Entrée non valide")
-        return select
 
     def launch_new_round(self):
         while True:
@@ -38,13 +30,15 @@ class Tournament_Menu:
 
 
 class Tournament_Reports:
-    def __init__(self):
-        pass
-
-    def select_rapport(self):
-        return input(
-            "\nGénérer un rapport de :\n1) Listes de tous les joueurs\n2) Listes des tournois\nChoix : "
-        )
+    def select_report(self):
+        return int(input(
+            "\nGénérer un rapport :\n1) Liste de tous les joueurs\n2) Liste de tous les tournois\nChoix : "
+        ))
+    
+    def tournament_details(self):
+        return int(input(
+            "\nAfficher les détails d'un tournoi :\n1) Liste joueurs\n2) Liste matchs et tours\n3) Quitter\nChoix : "
+        ))
 
 
 class Tournament_Creation:
