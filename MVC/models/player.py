@@ -1,14 +1,30 @@
+import database
+
+
 class Players_Manager:
     def __init__(self):
         self.idExist = ["FF78420"]
         self.players_list = []
+        # self.id_db = self.check_id_db(id_to_check)
 
     def add_id_player(self, idplayer):
         self.idExist.append(idplayer)
 
-    def check_id_unicity(self):
-        # print(self.idExist)
-        return self.idExist
+    def check_id_unicity(self, players_loaded):
+        test_id = []
+        for i in players_loaded["playertable"]:
+            test_id.extend(i.keys())
+        return test_id
+        # if id_to_check in test_id:
+        #     return False
+
+
+# id = "TF52895"
+# test = Players_Manager().check_id_db(id)
+# print("test")
+# id = "TF52892"
+# test = Players_Manager().check_id_db(id)
+# # print(test)
 
 
 class Player:

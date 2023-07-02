@@ -1,7 +1,7 @@
 from prettytable import PrettyTable
 
 
-def players_reports(players_loaded):
+def all_players_reports(players_loaded):
     reports_players = PrettyTable()
     reports_players.field_names = [
         "IDENTIFIANT",
@@ -49,7 +49,6 @@ def tournaments_reports_details(tournament_loaded, choice_details):
             "Nom complet",
             "Date de naissance",
             "Score",
-            "Rang",
         ]
         for i in tournament_loaded["registered_players"]:
             players_list = [
@@ -59,41 +58,44 @@ def tournaments_reports_details(tournament_loaded, choice_details):
                 i.fullname,
                 i.birthday,
                 i.score,
-                i.rank,
             ]
             reports_details_tournament.add_row(players_list)
+        reports_details_tournament.sortby = "Score"
+        reports_details_tournament.reversesort = True
     else:
         reports_details_tournament.field_names = [
             "Tour",
             "Début du tour",
             "Fin du tour",
-            "Liste des matchs",
+            "Joueur 1",
+            "Score J1",
+            "VS",
+            "Score J2",
+            "Joueur 2",
         ]
         for i in tournament_loaded["list_round"]:
             print("nuage")
             print(i)
-            rounds_list = [
-                i.name,
-                i.time_top,
-                i.time_stop,
-                i.matchs_round,
-            ]
-            reports_details_tournament.add_row(rounds_list)
+            for j in i.obj_matchs:
+                # match_data = next(iter(j))
+                match_resulat = [
+                    j.player1,
+                    j.scoreP1,
+                    j.scoreP2,
+                    j.player2,
+                ]
+                rounds_list = [
+                    i.name,
+                    i.time_top,
+                    i.time_stop,
+                    match_resulat[0],
+                    match_resulat[1],
+                    "VS",
+                    match_resulat[2],
+                    match_resulat[3],
+                ]
 
-    reports_details_tournament.add_autoindex()
+                reports_details_tournament.add_row(rounds_list)
+        reports_details_tournament.add_autoindex()
     print(reports_details_tournament)
 
-    # name = tournaments_loaded["name"]
-    # date_top = tournaments_loaded["date_top"]
-    # date_stop = tournaments_loaded["date_stop"]  # à corriger
-    # colonne = [name, date_top, date_stop]
-    # player_data = next(iter(i))
-    # player_list = [
-    #     i[player_data].idplayer,
-    #     i[player_data].name,
-    #     i[player_data].forename,
-    #     i[player_data].fullname,
-    #     i[player_data].birthday,
-    #     i[player_data].score,
-    #     i[player_data].rank,
-    # ]

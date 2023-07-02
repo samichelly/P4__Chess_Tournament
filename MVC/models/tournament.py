@@ -1,19 +1,21 @@
 import pandas as pd
+from random import shuffle
+from prettytable import PrettyTable
 from get_datetime import get_day
 
 
 class Tournament:
     def __init__(self, about_tournament):
-        self.name = about_tournament['name']
-        self.place = about_tournament['place']
-        self.date_top = about_tournament['date_top']
-        self.date_stop = about_tournament['date_stop']
-        self.nb_round = about_tournament['nb_round']
-        self.current_round = about_tournament['current_round']
-        self.list_round = about_tournament['list_round']
-        self.registered_players = about_tournament['registered_players']
-        self.id_match_played = about_tournament['id_match_played']
-        self.description = about_tournament['description']
+        self.name = about_tournament["name"]
+        self.place = about_tournament["place"]
+        self.date_top = about_tournament["date_top"]
+        self.date_stop = about_tournament["date_stop"]
+        self.nb_round = about_tournament["nb_round"]
+        self.current_round = about_tournament["current_round"]
+        self.list_round = about_tournament["list_round"]
+        self.registered_players = about_tournament["registered_players"]
+        self.id_match_played = about_tournament["id_match_played"]
+        self.description = about_tournament["description"]
 
     def __str__(self):
         if self.date_stop == "":
@@ -29,6 +31,18 @@ class Tournament:
         self.date_stop = get_day()
         # return self.date_top
 
+    def get_players_list(self, player):
+        self.registered_players.append(player)
+        print(f"Joueurs enregistré(s) : {len(self.registered_players)}")
+        return self.registered_players
+
+    def shuffle_players(self):
+        shuffle(self.registered_players)
+        return self.registered_players
+
+    def get_players(self):
+        return self.registered_players
+
     def get_current_round(self):
         self.current_round = len(self.list_round) + 1
         return self.current_round
@@ -37,11 +51,6 @@ class Tournament:
         self.list_round.append(result_round)
         # return self.list_round[-1]
 
-    def get_players_list(self, player):
-        self.registered_players.append(player)
-        print(f"Joueurs enregistré(s) : {len(self.registered_players)}")
-        return self.registered_players
-    
     def sort_alphabetic(self, players):
         self.registered_players = sorted(players, key=lambda x: x.name)
         return self.registered_players
@@ -72,26 +81,27 @@ class Tournament:
         self.registered_players = sorted(players, key=lambda x: x.score, reverse=True)
         return self.registered_players
 
-    def final_ranking(self, players):
-        head_table = ["Identifiant", "Nom Complet", "Points"]  # add player_rank
-        ranking = pd.DataFrame(columns=head_table)
-        # ranking.index = range(1, len(players))
-        for player in players:
-            profile_player = [player.idplayer, player.fullname, player.score]
-            ranking.loc[len(ranking)] = profile_player
-        ranking.sort_values(by=["Points"], ascending=False)
-        # Ajouter le trie du classement par rang + index qui conmmence par 1
+    def display_ranking(self):
+        ranking = PrettyTable()
+        ranking.field_names = [
+            "Identifiant",
+            "Nom",
+            "Prénom",
+            "Nom complet",
+            "Date de naissance",
+            "Score",
+        ]
+        for i in self.registered_players:
+            players_list = [
+                i.idplayer,
+                i.name,
+                i.forename,
+                i.fullname,
+                i.birthday,
+                i.score,
+            ]
+            ranking.add_row(players_list)
+        ranking.sortby = "Score"
+        ranking.reversesort = True
+        print(ranking)
         return ranking
-
-    # def save_tournament(self):
-    #     return {
-    #         "tournament_name": self.name,
-    #         "tournament_place": self.place,
-    #         "date_top": self.date_top,
-    #         "date_stop": self.date_stop,
-    #         "number_of_rounds": self.nbRound,
-    #         "current_round": self.current_round,
-    #         "rounds": self.list_round,
-    #         "registered_players": self.registered_players,
-    #         "description": self.description,
-    #     }

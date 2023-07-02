@@ -13,7 +13,7 @@ def generate_reports():
         choice_reports = Tournament_Reports().select_report()
         if choice_reports == 1:
             players_loaded = database.read_players_json("player")
-            reports.players_reports(players_loaded)
+            reports.all_players_reports(players_loaded)
 
         elif choice_reports == 2:
             tournament_loaded = database.read_tournament_json("tournament")
@@ -48,11 +48,13 @@ def add_player_to_db():
             input("\nIncrivez un nouveau joueur ? O-Oui / N-Non\nChoix : ")
         )
         if new_player == "O":
+            manager = Players_Manager()
             players_loaded = database.read_players_json("player")
-            # print(players_loaded)
-            # print("playersloaded")
-            player = Player(Create_Player_View(manager=None).create_profile_player())
-            database.save_player(player, players_loaded, "player")
+            id_exists = manager.check_id_unicity(players_loaded)
+            player_creation = Create_Player_View(id_exists).create_profile_player()
+            if player_creation is not None:
+                player = Player(player_creation)
+                database.save_player(player, players_loaded, "player")
         elif new_player == "N":
             break
         else:
@@ -64,7 +66,6 @@ def create_tournament():
     tournament_loaded = database.read_tournament_json("tournament")
     database.save_tournament(tournament_def, tournament_loaded, "tournament")
     players_loaded = database.read_players_json("player")
-    manager = Players_Manager()
     while True:
         add_player = str.upper(
             input(
@@ -73,7 +74,7 @@ def create_tournament():
         )
 
         if add_player == "1":
-            reports.players_reports(players_loaded)
+            reports.all_players_reports(players_loaded)
             input_players_selection = input(
                 "\nIndiquer les Index séparés par une virgule et un espace : "
             )
@@ -84,22 +85,9 @@ def create_tournament():
                 tournament_def.get_players_list(player)
 
         elif add_player == "2":
-            while True:
-                player = Player(
-                    Create_Player_View(manager=None).create_profile_player()
-                )
-                database.save_player(player, players_loaded, "player")
-                print(player)
-                tournament_def.get_players_list(player)
-                add_new_player = str.upper(
-                    input("Ajouter un nouveau joueur :\nO-Oui\nN-Non\nChoix : ")
-                )
-                if add_new_player == "O":
-                    pass
-                elif add_new_player == "N":
-                    break
-                else:
-                    print("Erreur : Entrée non valide")
+            add_player_to_db()
+            print(player)
+            tournament_def.get_players_list(player)
         elif add_player == "3":
             return tournament_def
         elif add_player == "4":
@@ -125,15 +113,17 @@ def load_tournament():
 
 
 def competition(tournament_def):
-    players_list = tournament_def.registered_players
     tournament_def.date_begin()
     while tournament_def.current_round < (tournament_def.nb_round - 1):
         launch_new_round = Tournament_Menu().launch_new_round()
         if launch_new_round is True:
+            players_list = tournament_def.get_players()
             new_round = Round(tournament_def.get_current_round())
             print(new_round)
+            if new_round.idround == 1:
+                players_list = tournament_def.shuffle_players()
             pairs_generated = new_round.pairs_generation(
-                tournament_def.sort_ranking(players_list),
+                players_list,
                 tournament_def.test_rematch(),
             )
             print(pairs_generated)  #  intégrer une view avant les matchs ?
@@ -148,11 +138,10 @@ def competition(tournament_def):
             result_round = []
             for i in pairs_generated:
                 match = Match(i)
-                match.attribution_couleur(i)
-                result_game = match.input_score(i)  #
-
+                match.attribution_couleur()
+                result_game = match.input_score()  #
                 print(match)
-
+                new_round.get_match(match)
                 result_round.append(result_game)  #
 
             new_round.time_end()
@@ -165,6 +154,7 @@ def competition(tournament_def):
             #########
 
             tournament_def.update_last_round(new_round)
+            tournament_def.sort_ranking(players_list)
             del new_round
 
             #########
@@ -176,10 +166,15 @@ def competition(tournament_def):
 
             tournament_loaded = database.read_tournament_json("tournament")
             database.save_tournament(tournament_def, tournament_loaded, "tournament")
-
+        tournament_loaded = database.read_tournament_json("tournament")
+        database.save_tournament(tournament_def, tournament_loaded, "tournament")
+        while True:
+            choice = input("\n1) Afficher le classement\n2) Quitter\nChoix : ")
+            if choice == "1":
+                tournament_def.display_ranking()
+            if choice == "2":
+                break
         else:
-            tournament_loaded = database.read_tournament_json("tournament")
-            database.save_tournament(tournament_def, tournament_loaded, "tournament")
             break
             # faire autre actions
 

@@ -2,59 +2,38 @@ import re
 
 
 class Create_Player_View:
-    def __init__(self, manager):
-        if manager is None:
-            self.idplayer = self._valid_id_without_manager()
-        else:
-            self.idplayer = self._valid_id(manager)
-        self.name = self._valid_name()
-        self.forename = self._valid_forename()
+    def __init__(self, id_exists):
+        self.idplayer = self._valid_id(id_exists)
+        if self.idplayer is False:
+            return None
+        self.name = self._valid_name("Nom")
+        self.forename = self._valid_name("Prénom")
         self.birthday = self._valid_birthday()
         self.score = 0
         self.rank = 0
 
-    def _valid_id(self, manager):
+    def _valid_id(self, id_exists):
         pattern = r"^[A-Za-z]{2}\d{5}$"
         while True:
             id_player = str.upper(input("\nIdentifiant Nat. du joueur : "))
             if re.search(pattern, id_player):
-                if id_player in manager.check_id_unicity():
-                    print("Identifiant déjà enregistré")
-                    # récupérer le joueurs depuis le JSON, à faire dans le controleur
-                else:
-                    manager.add_id_player(id_player)
-                    False
+                if id_player not in id_exists:
                     return id_player
+                print("Identifiant déjà existant")
+                choice = str.upper(
+                    input("Quitter l'ajout du joueur ?\nO-oui\nN-Non\nChoix : ")
+                )
+                if choice == "O":
+                    return False
             else:
                 print("Erreur : Identifiant incorrect")
 
-    def _valid_id_without_manager(self):
-        pattern = r"^[A-Za-z]{2}\d{5}$"
-        while True:
-            id_player = str.upper(input("\nIdentifiant Nat. du joueur : "))
-            if re.search(pattern, id_player):
-                False
-                return id_player
-            else:
-                print("Erreur : Identifiant incorrect")
-
-    def _valid_name(self):
+    def _valid_name(self, nom):
         pattern = r"(^[A-Za-z]+[ -][A-Za-z]+$)|(^[A-Za-z]+$)"
         while True:
-            name = str.upper(input("Nom : "))
+            name = str.upper(input(f"{nom} : "))
             if re.search(pattern, name):
-                False
                 return name
-            else:
-                print("Erreur : Entrée non conforme")
-
-    def _valid_forename(self):
-        pattern = r"(^[A-Za-z]+[ -][A-Za-z]+$)|(^[A-Za-z]+$)"
-        while True:
-            surname = str.upper(input("Prénom : "))
-            if re.search(pattern, surname):
-                False
-                return surname
             else:
                 print("Erreur : Entrée non conforme")
 
@@ -63,12 +42,13 @@ class Create_Player_View:
         while True:
             birthday = str.upper(input("Date de naissance (JJ/MM/AAAA) : "))
             if re.search(pattern, birthday):
-                False
                 return birthday
             else:
                 print("Erreur : Entrée non conforme")
 
     def create_profile_player(self):
+        if self.idplayer is False:
+            return None
         return {
             "idplayer": self.idplayer,
             "name": self.name,

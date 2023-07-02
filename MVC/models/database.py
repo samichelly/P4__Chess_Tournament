@@ -1,10 +1,5 @@
-import json
 import jsonpickle
 import os
-import player
-import tournament
-import round
-import match
 
 path = "C:/Users/samic/Documents/OpenClassRooms/PROJET_3/MVC/database/test.json"
 

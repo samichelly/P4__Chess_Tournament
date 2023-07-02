@@ -8,6 +8,7 @@ class Round:
         self.time_top = self.time_begin()
         self.time_stop = ""
         self.matchs_round = []
+        self.obj_matchs = []
 
     def __str__(self):
         if self.time_stop == "":
@@ -61,6 +62,9 @@ class Round:
     def results_round(self, result_matchs):
         self.matchs_round = result_matchs
         return self.matchs_round
+
+    def get_match(self, match):
+        self.obj_matchs.append(match)
 
     def time_begin(self):
         self.time_top = get_time()

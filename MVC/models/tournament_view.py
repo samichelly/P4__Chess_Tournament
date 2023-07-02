@@ -3,7 +3,7 @@ class Tournament_Menu:
         while True:
             select = int(
                 input(
-                    "\n1) Consulter les rapports\n2) Ajouter de nouveau joueur\n"
+                    "\n1) Consulter les rapports\n2) Ajouter un nouveau joueur\n"
                     "3) Créer un tournoi\n4) Charger un tournoi\n5) Quitter l'interface\nChoix : "
                 )
             )
