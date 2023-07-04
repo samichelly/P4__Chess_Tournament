@@ -4,7 +4,7 @@ from view.tournament_view import (
     Tournament_Reports,
     invalid_value,
 )
-from view.create_player_view import Create_Player_View
+from view.create_player_view import Create_Player
 from models.tournament import Tournament
 from models.player import Player
 from controller.player_controller import Players_Manager
@@ -35,7 +35,7 @@ def generate_reports():
                     if choice_details in [
                         1,
                         2,
-                    ]:  # 1 for players tournament, 2 for rounds/matches
+                    ]:  # 1 for players, 2 for rounds/matches
                         tournament_details = database.load_tournament_json(
                             tournament_loaded, select_tournament
                         )
@@ -56,22 +56,20 @@ def generate_reports():
 def add_player_to_db():
     """add player to db"""
     while True:
-        new_player = str.upper(
-            input("\nIncrivez un nouveau joueur ? O-Oui / N-Non\nChoix : ")
-        )
+        new_player = Tournament_Menu().add_new_player()
         if new_player == "O":
             manager = Players_Manager()
             players_loaded = database.read_players_json()
             if players_loaded is not None:
                 id_exists = manager.check_id_unicity(players_loaded)
-                player_creation = Create_Player_View(id_exists).create_profile_player()
+                player_creation = Create_Player(id_exists).create_profile_player()
                 if player_creation is not None:
                     player = Player(player_creation)
                     database.save_player(player, players_loaded)
                     return player
             else:
                 player = Player(
-                    Create_Player_View(id_exists=None).create_profile_player()
+                    Create_Player(id_exists=None).create_profile_player()
                 )
                 database.save_player(player, players_loaded)
                 return player
@@ -83,22 +81,17 @@ def add_player_to_db():
 
 def create_tournament():
     """create tournament to play it"""
-    tournament_def = Tournament(Tournament_Creation().about_tournament())
+    creation_tournament = Tournament_Creation()
+    tournament_def = Tournament(creation_tournament.about_tournament())
     tournament_loaded = database.read_tournament_json()
     database.save_tournament(tournament_def, tournament_loaded)
     players_loaded = database.read_players_json()
     while True:
-        add_player = str.upper(
-            input(
-                "\n1) Charger des joueurs\n2) Incrire un nouveau joueur\n3) Commencer le tournoi\nChoix : "
-            )
-        )
+        add_player = creation_tournament.add_player_to_tournament()
 
         if add_player == "1":
             reports.all_players_reports(players_loaded)
-            input_players_selection = input(
-                "\nIndiquer les index séparés par un espace : "
-            )
+            input_players_selection = creation_tournament.load_players_to_tournament()
             players_selection = input_players_selection.split(" ")
             players = database.load_player(players_loaded, players_selection)
             for i in players:
@@ -113,7 +106,7 @@ def create_tournament():
             test_players_in = tournament_def.get_players()
             if len(test_players_in) != 0:
                 return tournament_def
-            print("Ajouter des joueurs pour commencer le tournoi")
+            creation_tournament.error_no_player()
             continue
         else:
             invalid_value()
@@ -126,7 +119,7 @@ def load_tournament():
     reading_tournament = database.read_tournament_json()
     if reading_tournament is not None:
         reports.tournaments_reports(reading_tournament)
-        select_tournament = input("\nIndiquer l'index à charger : ")
+        select_tournament = Tournament_Menu().select_tournament_to_load()
         tournament_loaded = database.load_tournament_json(
             reading_tournament, select_tournament
         )

@@ -1,7 +1,7 @@
 import re
 
 
-class Create_Player_View:
+class Create_Player:
     """create player parameters to input in Player Class"""
     def __init__(self, id_exists):
         self.idplayer = self._valid_id(id_exists)

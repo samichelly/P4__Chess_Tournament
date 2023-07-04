@@ -7,7 +7,7 @@ class Tournament_Menu:
         while True:
             select = int(
                 input(
-                    "\nBIENVENUE\n1) Consulter les rapports\n2) Ajouter un nouveau joueur\n"
+                    "\nCHESS TOURNAMENTS\n\n1) Consulter les rapports\n2) Ajouter un nouveau joueur\n"
                     "3) Créer un tournoi\n4) Charger un tournoi\nChoix : "
                 )
             )
@@ -27,6 +27,14 @@ class Tournament_Menu:
                 return False
             else:
                 print("Entrée non valide")
+
+    def add_new_player(self):
+        return str.upper(
+            input("\nIncrivez un nouveau joueur ? O-Oui / N-Non\nChoix : ")
+        )
+
+    def select_tournament_to_load(self):
+        return input("\nIndiquer l'index à charger : ")
 
 
 class Tournament_Reports:
@@ -80,10 +88,6 @@ class Tournament_Creation:
             print(f"le tournoi sera de {self.number_round} tour(s)")
         return self.number_round
 
-    def _description_tournament(self):
-        self.description = input("Entrez une description : ")
-        return self.description
-
     def about_tournament(self):
         return {
             "name": self.name,
@@ -97,3 +101,18 @@ class Tournament_Creation:
             "id_match_played": [],
             "description": self.description,
         }
+
+    def _description_tournament(self):
+        self.description = input("Entrez une description : ")
+        return self.description
+
+    def add_player_to_tournament(self):
+        return input(
+            "\n1) Charger des joueurs\n2) Incrire un nouveau joueur\n3) Commencer le tournoi\nChoix : "
+        )
+
+    def load_players_to_tournament(self):
+        return input("\nIndiquer les index séparés par un espace : ")
+
+    def error_no_player(self):
+        print("Ajouter des joueurs pour commencer le tournoi")
