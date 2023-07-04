@@ -29,3 +29,9 @@ Ce choix permet de recharger un tournoi non terminé afin de pouvoir le continue
 
 Les sections `3. Créer un tournoi` et `4. Charger un tournoi` permettent de commencer le tournoi une fois tous les joueurs enregistrés.
 Une fois le tournoi commencer il sera demander à l'utilisateur s'il souhaite lancer un nouveau tours et ainsi de renseigner les résultats des matchs. Au terme du tour, un classement actualisé et trié par ordre décroissant sur le score est affiché.
+
+## Générer un rapport flake8 
+1. Installer flake8 avec la commande suivante `pip install flake8`
+2. Exécuter la commande suivante `flake8 --format=html --htmldir=flake8_report --max-line-length=119`
+3. Consulter le rapport dans le dossier `flake-report`
+4. Se placer dans le dossier MVC et lancer le programme avec la commande `python main.py`
