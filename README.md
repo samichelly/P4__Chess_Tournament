@@ -13,13 +13,10 @@ Au démarrage, le menu propose 4 actions :
 
 ### 1. Consulter les rapports
 Ce choix permet d'afficher un rapport. Il existe deux types de rapports principaux :
-- a) Consulter l'ensemble des joueurs enregistrés dans le fichier des joueurs nationaux
-- b) Consulter les tournois créés précédemment
--- Consulter l'ensemble des joueurs
--- Permet de consulter tous les joueurs enregistrés dans le fichier des joueurs nationaux.
-
-#### b) Consulter les tournois
-Permet de consulter les tournois créés précédemment. Il est possible de consulter les détails des joueurs participants à un tournoi ainsi que les détails des tours et matchs d'un tournoi.
+1. Consulter l'ensemble des joueurs enregistrés dans le fichier des joueurs nationaux
+2. Consulter les tournois créés précédemment et obtenir les détails suivants :
+    - Consulter la liste des joueurs participants au tournoi
+    - Consulter les détails des tours et matchs d'un tournoi.
 
 ### 2. Ajouter un nouveau joueur
 Ce choix permet de créer un nouveau joueur qui sera enregistré dans la base de données nationale sans l'assigner à un tournoi. Un contrôle d'unicité est réalisé afin de ne pas créer de joueur en doublon.
@@ -29,3 +26,6 @@ Ce choix permet de créer un nouveau tournoi. Vous pouvez ajouter des joueurs de
 
 ### 4. Charger un tournoi
 Ce choix permet de recharger un tournoi non terminé afin de pouvoir le continuer. Il suffit d'indiquer l'index du tournoi souhaité à charger.
+
+Les sections `3. Créer un tournoi` et `4. Charger un tournoi` permettent de commencer le tournoi une fois tous les joueurs enregistrés.
+Une fois le tournoi commencer il sera demander à l'utilisateur s'il souhaite lancer un nouveau tours et ainsi de renseigner les résultats des matchs. Au terme du tour, un classement actualisé et trié par ordre décroissant sur le score est affiché.
