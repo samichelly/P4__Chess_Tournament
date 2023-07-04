@@ -1,0 +1,124 @@
+{
+    "playertable": [
+        {
+            "BG42972": {
+                "py/object": "models.player.Player",
+                "idplayer": "BG42972",
+                "name": "BARETS",
+                "forename": "MAXIME",
+                "fullname": "MAXIME BARETS",
+                "birthday": "30/07/1993",
+                "score": 0,
+                "rank": 0
+            }
+        },
+        {
+            "SZ42902": {
+                "py/object": "models.player.Player",
+                "idplayer": "SZ42902",
+                "name": "CHIESA",
+                "forename": "GEORGE",
+                "fullname": "GEORGE CHIESA",
+                "birthday": "22/05/1992",
+                "score": 0,
+                "rank": 0
+            }
+        },
+        {
+            "TE04202": {
+                "py/object": "models.player.Player",
+                "idplayer": "TE04202",
+                "name": "GOGNARD",
+                "forename": "BIRGITTE",
+                "fullname": "BIRGITTE GOGNARD",
+                "birthday": "19/05/1976",
+                "score": 0,
+                "rank": 0
+            }
+        },
+        {
+            "HV80420": {
+                "py/object": "models.player.Player",
+                "idplayer": "HV80420",
+                "name": "LILY",
+                "forename": "MEGAN",
+                "fullname": "MEGAN LILY",
+                "birthday": "11/06/1998",
+                "score": 0,
+                "rank": 0
+            }
+        },
+        {
+            "FV42902": {
+                "py/object": "models.player.Player",
+                "idplayer": "FV42902",
+                "name": "NOGUERA",
+                "forename": "SEBASTIEN",
+                "fullname": "SEBASTIEN NOGUERA",
+                "birthday": "06/05/1990",
+                "score": 0,
+                "rank": 0
+            }
+        },
+        {
+            "DF94202": {
+                "py/object": "models.player.Player",
+                "idplayer": "DF94202",
+                "name": "PERRIN",
+                "forename": "SYLVIE",
+                "fullname": "SYLVIE PERRIN",
+                "birthday": "30/08/1993",
+                "score": 0,
+                "rank": 0
+            }
+        },
+        {
+            "HB94202": {
+                "py/object": "models.player.Player",
+                "idplayer": "HB94202",
+                "name": "SALVAYERE",
+                "forename": "MARC",
+                "fullname": "MARC SALVAYERE",
+                "birthday": "24/07/1997",
+                "score": 0,
+                "rank": 0
+            }
+        },
+        {
+            "IG79410": {
+                "py/object": "models.player.Player",
+                "idplayer": "IG79410",
+                "name": "SALVAYRE",
+                "forename": "LUC",
+                "fullname": "LUC SALVAYRE",
+                "birthday": "28/02/1998",
+                "score": 0,
+                "rank": 0
+            }
+        },
+        {
+            "MO32040": {
+                "py/object": "models.player.Player",
+                "idplayer": "MO32040",
+                "name": "STRUM",
+                "forename": "MATILDE",
+                "fullname": "MATILDE STRUM",
+                "birthday": "29/04/1995",
+                "score": 0,
+                "rank": 0
+            }
+        },
+        {
+            "GX79420": {
+                "py/object": "models.player.Player",
+                "idplayer": "GX79420",
+                "name": "THURAM",
+                "forename": "LILIAN",
+                "fullname": "LILIAN THURAM",
+                "birthday": "17/09/1985",
+                "score": 0,
+                "rank": 0
+            }
+        }
+    ]
+}

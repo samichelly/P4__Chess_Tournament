@@ -1,10 +1,14 @@
+def invalid_value():
+    print("Entrée incorrecte")
+
+
 class Tournament_Menu:
     def menu_tournament(self):
         while True:
             select = int(
                 input(
-                    "\n1) Consulter les rapports\n2) Ajouter un nouveau joueur\n"
-                    "3) Créer un tournoi\n4) Charger un tournoi\n5) Quitter l'interface\nChoix : "
+                    "\nBIENVENUE\n1) Consulter les rapports\n2) Ajouter un nouveau joueur\n"
+                    "3) Créer un tournoi\n4) Charger un tournoi\nChoix : "
                 )
             )
             if select in {1, 2, 3, 4, 5}:
@@ -24,24 +28,30 @@ class Tournament_Menu:
             else:
                 print("Entrée non valide")
 
-    def display_final_ranking(self, table):  # get profil des joueurs
-        print("\nClassement final :\n")
-        print(table)
-
 
 class Tournament_Reports:
     def select_report(self):
-        return int(input(
-            "\nGénérer un rapport :\n1) Liste de tous les joueurs\n2) Liste de tous les tournois\nChoix : "
-        ))
-    
+        return int(
+            input(
+                "\nGénérer un rapport :\n1) Liste de tous les joueurs\n2) Liste de tous les tournois\nChoix : "
+            )
+        )
+
+    def display_tournament_details(self):
+        return str.upper(
+            input("\nAfficher des détails sur un tournoi\nO-Oui\nN-Non\nChoix : ")
+        )
+
+    def select_tournament_details(self):
+        return input("\nIndiquer l'index du tournoi à afficher : ")
+
     def tournament_details(self):
-        return int(input(
-            "\nAfficher les détails d'un tournoi :\n1) Liste joueurs\n2) Liste matchs et tours\n3) Quitter\nChoix : "
-        ))
+        return int(input("\n1) Liste joueurs\n2) Liste matchs et tours\nChoix : "))
 
 
 class Tournament_Creation:
+    """create tournament parameters to input in Tournament Class"""
+
     def __init__(self):
         self.name = self._name_tournament()
         self.place = self._place_tournament()
@@ -52,7 +62,6 @@ class Tournament_Creation:
         while True:
             self.name = input("\nEntrez le nom du tournoi : ")
             if self.name != "":
-                False
                 return self.name
             else:
                 print("Veuillez entrer un nom")

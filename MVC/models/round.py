@@ -1,4 +1,4 @@
-from get_datetime import get_time
+from controller.get_datetime import get_time
 
 
 class Round:
@@ -7,19 +7,24 @@ class Round:
         self.name = f"Round {idround}"
         self.time_top = self.time_begin()
         self.time_stop = ""
-        self.matchs_round = []
-        self.obj_matchs = []
+        self.matches_round = []
+        self.obj_matches = []
 
     def __str__(self):
         if self.time_stop == "":
             return f"\n{self.name}"
         else:
-            return f"{self.name} débuté à {self.time_top} et terminé à {self.time_stop}. \nRésultats :\n{self.matchs_round}"
+            return (
+                f"\n{self.name} débuté à {self.time_top} et terminé à {self.time_stop}"
+            )
 
-    def pairs_generation(
-        self, players_ranked, id_match_played
-    ):  # Classement trié par score / player_ranked = obj player
-        players_list = [i.idplayer for i in players_ranked]
+    def pairs_generation(self, players_sorted, id_match_played):
+        """if players_sorted is odd number, create exempt player to complete matchmaking
+        id_match_played is result of tournament method match_played
+        create match between closest 2 players not id_match_played
+        if impossible create match between closest players
+        """
+        players_list = [i.idplayer for i in players_sorted]
         test_pair = len(players_list) % 2
         if test_pair > 0:
             players_list.insert(1, "EXEMPT")
@@ -29,7 +34,7 @@ class Round:
 
                 if test_id_match not in id_match_played:
                     paire = [players_list[0], players_list[i]]
-                    self.matchs_round.append(paire)
+                    self.matches_round.append(paire)
                     print(f"match : {paire[0]} VS {paire[1]}")
                     players_list.pop(i)
                     players_list.pop(0)
@@ -37,39 +42,37 @@ class Round:
 
                 elif players_list[i] == players_list[-1]:
                     paire = [players_list[0], players_list[1]]
-                    self.matchs_round.append(paire)
+                    self.matches_round.append(paire)
                     print(f"match : {paire[0]} VS {paire[1]}")
                     players_list.pop(1)
                     players_list.pop(0)
                     break
 
                 else:
-                    None
+                    continue
 
-        print(players_list)
-        print(self.matchs_round)
-        print("Création des matchs terminées")
-        return self.matchs_round
+        return self.matches_round
 
     def clean_exempt_match(self, list_match):
+        """erase EXEMPT match to don't play it"""
         for i in list_match:
             test = str(i).find("EXEMPT")
             if test != -1:
                 list_match.remove(i)
-        self.matchs_round = list_match
-        return self.matchs_round
+        self.matches_round = list_match
+        return self.matches_round
 
-    def results_round(self, result_matchs):
-        self.matchs_round = result_matchs
-        return self.matchs_round
+    def results_round(self, result_matches):
+        """get tuple ([player, score], [player, score])"""
+        self.matches_round = result_matches
+        return self.matches_round
 
     def get_match(self, match):
-        self.obj_matchs.append(match)
+        """get object match"""
+        self.obj_matches.append(match)
 
     def time_begin(self):
         self.time_top = get_time()
-        return self.time_top
 
     def time_end(self):
         self.time_stop = get_time()
-        # return self.date_top

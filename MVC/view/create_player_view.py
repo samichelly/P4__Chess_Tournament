@@ -2,6 +2,7 @@ import re
 
 
 class Create_Player_View:
+    """create player parameters to input in Player Class"""
     def __init__(self, id_exists):
         self.idplayer = self._valid_id(id_exists)
         if self.idplayer is False:
@@ -17,14 +18,18 @@ class Create_Player_View:
         while True:
             id_player = str.upper(input("\nIdentifiant Nat. du joueur : "))
             if re.search(pattern, id_player):
-                if id_player not in id_exists:
+                try:
+                    if id_player not in id_exists:
+                        return id_player
+                except TypeError:
                     return id_player
-                print("Identifiant déjà existant")
-                choice = str.upper(
-                    input("Quitter l'ajout du joueur ?\nO-oui\nN-Non\nChoix : ")
-                )
-                if choice == "O":
-                    return False
+                else:
+                    print("Identifiant déjà existant")
+                    choice = str.upper(
+                        input("Quitter l'ajout du joueur ?\nO-oui\nN-Non\nChoix : ")
+                    )
+                    if choice == "O":
+                        return False
             else:
                 print("Erreur : Identifiant incorrect")
 

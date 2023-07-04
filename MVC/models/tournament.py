@@ -1,7 +1,6 @@
-import pandas as pd
 from random import shuffle
 from prettytable import PrettyTable
-from get_datetime import get_day
+from controller.get_datetime import get_day
 
 
 class Tournament:
@@ -21,22 +20,21 @@ class Tournament:
         if self.date_stop == "":
             return f"\nTournoi : {self.name} ({self.place}) du {self.date_top}"
         else:
-            return f"\nTournoi : {self.name} ({self.place}) débuté le {self.date_top} et terminé le {self.date_stop}. Les résultats :\n{self.list_round}"
+            return f"\nTournoi : {self.name} ({self.place}) débuté le {self.date_top} et terminé le {self.date_stop}."
 
     def date_begin(self):
         self.date_top = get_day()
-        return self.date_top
 
     def date_end(self):
         self.date_stop = get_day()
-        # return self.date_top
 
     def get_players_list(self, player):
+        """add player to tournament"""
         self.registered_players.append(player)
-        print(f"Joueurs enregistré(s) : {len(self.registered_players)}")
         return self.registered_players
 
     def shuffle_players(self):
+        """shuffle players for first round"""
         shuffle(self.registered_players)
         return self.registered_players
 
@@ -44,19 +42,16 @@ class Tournament:
         return self.registered_players
 
     def get_current_round(self):
+        """return the current round"""
         self.current_round = len(self.list_round) + 1
         return self.current_round
 
     def update_last_round(self, result_round):
+        """update match results of complete round"""
         self.list_round.append(result_round)
-        # return self.list_round[-1]
-
-    def sort_alphabetic(self, players):
-        self.registered_players = sorted(players, key=lambda x: x.name)
-        return self.registered_players
 
     def match_played(self, paires):
-        """Génération des id_match : id_match == id_j1+id_j2 et id_j2+id_j1"""
+        """generate id_match to avoid rematch: id_match == id_p1+id_p2 et id_p2+id_p1"""
         for paire in paires:
             paire.sort()
             self.id_match_played.append("".join(map(str, paire)))
@@ -67,22 +62,25 @@ class Tournament:
     def test_rematch(self):
         return self.id_match_played
 
-    def update_score(self, game_result):  # game_result => tuple (id_joueur, point)
+    def update_score(self, game_result):
+        """game_result => tuple (id_joueur, point)
+        update score for each player
+        """
         for player in self.registered_players:
             for result in game_result:
                 for id in result:
                     if player.idplayer == str(id[0]):
                         player.score += id[1]
-                        print("score")
-                        print(player.idplayer, player.score)
                         break
 
-    def sort_ranking(self, players):
+    def sort_score(self, players):
+        """sort by score"""
         self.registered_players = sorted(players, key=lambda x: x.score, reverse=True)
         return self.registered_players
 
     def display_ranking(self):
         ranking = PrettyTable()
+        ranking.title = "Classement"
         ranking.field_names = [
             "Identifiant",
             "Nom",
@@ -104,4 +102,3 @@ class Tournament:
         ranking.sortby = "Score"
         ranking.reversesort = True
         print(ranking)
-        return ranking

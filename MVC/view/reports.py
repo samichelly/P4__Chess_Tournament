@@ -2,7 +2,9 @@ from prettytable import PrettyTable
 
 
 def all_players_reports(players_loaded):
+    """report of all players added in national file"""
     reports_players = PrettyTable()
+    reports_players.title = "Listes des joueurs nationaux"
     reports_players.field_names = [
         "IDENTIFIANT",
         "NOM",
@@ -25,7 +27,9 @@ def all_players_reports(players_loaded):
 
 
 def tournaments_reports(tournaments_loaded):
+    """report short informations about all tournament"""
     reports_tournaments = PrettyTable()
+    reports_tournaments.title = "Listes des tournois"
     reports_tournaments.field_names = ["TOURNOI (nom)", "date debut", "date fin"]
     for i in tournaments_loaded["tournament_table"]:
         tournament_data = next(iter(i))
@@ -40,8 +44,11 @@ def tournaments_reports(tournaments_loaded):
 
 
 def tournaments_reports_details(tournament_loaded, choice_details):
+    """report full informations about one tournament
+    informations about players or rounds and matches"""
     reports_details_tournament = PrettyTable()
     if choice_details == 1:
+        reports_details_tournament.title = "Listes des joueurs du tournois"
         reports_details_tournament.field_names = [
             "Identifiant",
             "Nom",
@@ -63,6 +70,7 @@ def tournaments_reports_details(tournament_loaded, choice_details):
         reports_details_tournament.sortby = "Score"
         reports_details_tournament.reversesort = True
     else:
+        reports_details_tournament.title = "Listes des tours/matchs du tournois"
         reports_details_tournament.field_names = [
             "Tour",
             "Début du tour",
@@ -74,10 +82,7 @@ def tournaments_reports_details(tournament_loaded, choice_details):
             "Joueur 2",
         ]
         for i in tournament_loaded["list_round"]:
-            print("nuage")
-            print(i)
-            for j in i.obj_matchs:
-                # match_data = next(iter(j))
+            for j in i.obj_matches:
                 match_resulat = [
                     j.player1,
                     j.scoreP1,
@@ -98,4 +103,3 @@ def tournaments_reports_details(tournament_loaded, choice_details):
                 reports_details_tournament.add_row(rounds_list)
         reports_details_tournament.add_autoindex()
     print(reports_details_tournament)
-
