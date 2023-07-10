@@ -1,7 +1,3 @@
-def invalid_value():
-    print("Entrée incorrecte")
-
-
 class Tournament_Menu:
     def menu_tournament(self):
         while True:
@@ -11,10 +7,13 @@ class Tournament_Menu:
                     "3) Créer un tournoi\n4) Charger un tournoi\nChoix : "
                 )
             )
-            if select in {1, 2, 3, 4, 5}:
+            if select in [1, 2, 3, 4]:
                 return select
             else:
                 print("Entrée non valide")
+
+    def invalid_value():
+        print("Entrée incorrecte")
 
     def launch_new_round(self):
         while True:

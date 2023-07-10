@@ -2,9 +2,12 @@ from datetime import date
 from datetime import datetime
 
 
-def get_day():
-    return date.today().strftime("%d/%m/%Y")
+class Timing:
+    def get_day(self):
+        return date.today().strftime("%d/%m/%Y")
 
+    def get_time(self):
+        return datetime.now().strftime("%H:%M:%S")
 
-def get_time():
-    return datetime.now().strftime("%H:%M:%S")
+    def birthday_date(self, birthday):
+        return datetime.strptime(birthday, "%d/%m/%Y")

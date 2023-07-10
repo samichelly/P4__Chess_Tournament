@@ -1,8 +1,9 @@
-from controller import tournament_controller
+from controller.tournament_controller import Tournament_Controller
 
 
 def main():
-    tournament_controller.menu_tournament()
+    controller = Tournament_Controller()
+    controller.menu_tournament()
 
 
 main()

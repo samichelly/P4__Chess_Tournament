@@ -1,8 +1,10 @@
+from controller.get_datetime import Timing
 import re
 
 
 class Create_Player:
     """create player parameters to input in Player Class"""
+
     def __init__(self, id_exists):
         self.idplayer = self._valid_id(id_exists)
         if self.idplayer is False:
@@ -43,13 +45,16 @@ class Create_Player:
                 print("Erreur : Entrée non conforme")
 
     def _valid_birthday(self):
-        pattern = r"^(0[1-9]|[12]\d|3[01])/(0[1-9]|1[0-2])/\d{4}$"
+        date = Timing()
         while True:
-            birthday = str.upper(input("Date de naissance (JJ/MM/AAAA) : "))
-            if re.search(pattern, birthday):
+            birthday = input("Date de naissance (JJ/MM/AAAA) : ")
+            try:
+                date.birthday_date(birthday)
                 return birthday
-            else:
-                print("Erreur : Entrée non conforme")
+            except ValueError:
+                print(
+                    "Erreur : Format de date incorrect. Veuillez entrer une date au format JJ/MM/AAAA."
+                )
 
     def create_profile_player(self):
         if self.idplayer is False:

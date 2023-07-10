@@ -1,4 +1,4 @@
-from controller.get_datetime import get_time
+from controller.get_datetime import Timing
 
 
 class Round:
@@ -72,7 +72,9 @@ class Round:
         self.obj_matches.append(match)
 
     def time_begin(self):
-        self.time_top = get_time()
+        time = Timing()
+        self.time_top = time.get_time()
 
     def time_end(self):
-        self.time_stop = get_time()
+        time = Timing()
+        self.time_stop = time.get_time()

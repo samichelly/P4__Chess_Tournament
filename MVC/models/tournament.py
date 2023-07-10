@@ -1,6 +1,6 @@
 from random import shuffle
 from prettytable import PrettyTable
-from controller.get_datetime import get_day
+from controller.get_datetime import Timing
 
 
 class Tournament:
@@ -23,10 +23,12 @@ class Tournament:
             return f"\nTournoi : {self.name} ({self.place}) débuté le {self.date_top} et terminé le {self.date_stop}."
 
     def date_begin(self):
-        self.date_top = get_day()
+        date = Timing()
+        self.date_top = date.get_day()
 
     def date_end(self):
-        self.date_stop = get_day()
+        date = Timing()
+        self.date_stop = date.get_day()
 
     def get_players_list(self, player):
         """add player to tournament"""
