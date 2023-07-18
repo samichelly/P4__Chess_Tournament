@@ -6,11 +6,21 @@ from view.tournament_view import (
 from view.create_player_view import Create_Player
 from models.tournament import Tournament
 from models.player import Player
-from controller.player_controller import Players_Manager
 from models.round import Round
 from models.match import Match
 from database.database import Database
 from view.reports import Reports
+
+
+class Players_Manager:
+    def check_id_unicity(self, players_loaded):
+        test_id = []
+        try:
+            for i in players_loaded["playertable"]:
+                test_id.extend(i.keys())
+            return test_id
+        except TypeError:
+            return None
 
 
 class Tournament_Controller:
