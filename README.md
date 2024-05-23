@@ -1,36 +1,70 @@
-# PROJET_4__JEU_ECHEC
-Projet 4 OC : Tournoi jeu d'échec - version testée avec Python : 3.11.3
+# PROJECT_4__Chess_Tournament
 
+## Project Description
 
-## Installation 
-1. Cloner ce repository avec la commande `git clone https://github.com/samichelly/PROJECT_4__Chess-Tournament.git`
-2. Mettre en place un environnement virtuel et l'activer
-3. Installer les packages nécessaires au bon fonctionnement de l'application avec la commande `pip install -r requirements.txt`
-4. Se placer dans le dossier MVC et lancer le programme avec la commande `python main.py`
+This project is the fourth in the OpenClassrooms - Python Application Developer training program. The objective is to manage chess tournament competitions. The application allows for the creation and management of chess tournaments, including player registration, tournament creation, match management, and result tracking.
 
-## Fonctionnement
-Au démarrage, le menu propose 4 actions :
+## Installation
 
-### 1. Consulter les rapports
-Ce choix permet d'afficher un rapport. Il existe deux types de rapports principaux :
-1. Consulter l'ensemble des joueurs enregistrés dans le fichier des joueurs nationaux
-2. Consulter les tournois créés précédemment et obtenir les détails suivants :
-    - Consulter la liste des joueurs participants au tournoi
-    - Consulter les détails des tours et matchs d'un tournoi.
+1. Clone this repository using the command:
+   ```bash
+   git clone https://github.com/samichelly/PROJECT_4__Chess-Tournament.git
 
-### 2. Ajouter un nouveau joueur
-Ce choix permet de créer un nouveau joueur qui sera enregistré dans la base de données nationale sans l'assigner à un tournoi. Un contrôle d'unicité est réalisé afin de ne pas créer de joueur en doublon.
+2. Set up a virtual environment and activate it:
+   - On macOS/Linux:
+     ```bash
+     python3 -m venv env
+     source env/bin/activate
+     ```
+   - On Windows:
+     ```bash
+     python -m venv env
+     .\env\Scripts\activate
+     ```
+3. Install the necessary packages for the application to function properly using the command:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Navigate to the MVC folder and run the program using the command:
+   ```bash
+   python main.py
+   ```
 
-### 3. Créer un tournoi
-Ce choix permet de créer un nouveau tournoi. Vous pouvez ajouter des joueurs depuis la base de données nationale ou ajouter un joueur inexistant directement dans le tournoi. Ce joueur sera également enregistré dans la base de données nationale sans action de l'utilisateur.
+## Functionality
 
-### 4. Charger un tournoi
-Ce choix permet de recharger un tournoi non terminé afin de pouvoir le continuer. Il suffit d'indiquer l'index du tournoi souhaité à charger.
+Upon startup, the menu offers 4 actions:
 
-Les sections `3. Créer un tournoi` et `4. Charger un tournoi` permettent de commencer le tournoi une fois tous les joueurs enregistrés.
-Une fois le tournoi commencer il sera demander à l'utilisateur s'il souhaite lancer un nouveau tours et ainsi de renseigner les résultats des matchs. Au terme du tour, un classement actualisé et trié par ordre décroissant sur le score est affiché.
+### 1. View Reports
 
-## Générer un rapport flake8-html
-1. Installer flake8 avec la commande suivante `pip install flake8`
-2. Exécuter la commande suivante `flake8 --format=html --htmldir=flake8_report --max-line-length=119`
-3. Consulter le rapport dans le dossier `flake-report`
+This option allows you to display a report. There are two main types of reports:
+1. View all players registered in the national player database.
+2. View previously created tournaments and obtain the following details:
+   - View the list of players participating in the tournament.
+   - View the details of the rounds and matches of a tournament.
+
+### 2. Add a New Player
+
+This option allows you to create a new player who will be registered in the national database without assigning them to a tournament. A uniqueness check is performed to avoid creating duplicate players.
+
+### 3. Create a Tournament
+
+This option allows you to create a new tournament. You can add players from the national database or add a non-existent player directly to the tournament. This player will also be registered in the national database without any user action.
+
+### 4. Load a Tournament
+
+This option allows you to reload an unfinished tournament in order to continue it. Simply indicate the index of the desired tournament to load.
+
+Sections `3. Create a Tournament` and `4. Load a Tournament` allow you to start the tournament once all players are registered. Once the tournament starts, the user will be asked if they wish to start a new round and enter the match results. At the end of the round, an updated ranking sorted in descending order by score is displayed.
+
+## Generate a flake8-html Report
+
+1. Install flake8 using the following command:
+   ```bash
+   pip install flake8
+   ```
+2. Execute the following command:
+   ```bash
+   flake8 --format=html --htmldir=flake8_report --max-line-length=119
+   ```
+3. View the report in the `flake8_report` folder.
+```
